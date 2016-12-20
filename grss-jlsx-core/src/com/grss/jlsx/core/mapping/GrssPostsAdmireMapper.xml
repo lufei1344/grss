@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssPostsAdmireDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssPostsAdmire" >
+    <id column="posts_id" property="postsId" jdbcType="VARCHAR" />
+    <id column="user_id" property="userId" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByKey" parameterType="com.grss.jlsx.core.bean.GrssPostsAdmire" >
+    delete from grss_posts_admire
+    where posts_id = #{postsId,jdbcType=VARCHAR}
+      and user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertByGrssPostsAdmire" parameterType="com.grss.jlsx.core.bean.GrssPostsAdmire" >
+    insert into grss_posts_admire
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="postsId != null" >
+        posts_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="postsId != null" >
+        #{postsId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="selectPostsAdmireByUserIdAndPostsId" resultType="java.lang.Integer" parameterType="java.util.Map">
+  	SELECT COUNT(0) FROM `grss_posts_admire` gpa WHERE gpa.`posts_id` = #{postsId} AND gpa.`user_id` = #{userId}
+  </select>
+  
+  <delete id="deleteByPostsId" parameterType="java.lang.String">
+  	delete from `grss_posts_admire`  where posts_id = #{postsId}
+  </delete>
+</mapper>

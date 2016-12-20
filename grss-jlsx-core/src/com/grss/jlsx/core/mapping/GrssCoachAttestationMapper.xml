@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssCoachAttestationDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssCoachAttestation" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="identity_card_url" property="identityCardUrl" jdbcType="VARCHAR" />
+    <result column="certification_url" property="certificationUrl" jdbcType="VARCHAR" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="coach_id" property="coachId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, identity_card_url, certification_url, finish_time, coach_id
+  </sql>
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+   	*
+    from grss_coach_attestation
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.String" >
+    delete from grss_coach_attestation
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertByGrssCoachAttestation" parameterType="com.grss.jlsx.core.bean.GrssCoachAttestation" >
+    insert into grss_coach_attestation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="identityCardUrl != null" >
+        identity_card_url,
+      </if>
+      <if test="certificationUrl != null" >
+        certification_url,
+      </if>
+      <if test="finishTime != null" >
+        finish_time,
+      </if>
+      <if test="coachId != null" >
+        coach_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="identityCardUrl != null" >
+        #{identityCardUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="certificationUrl != null" >
+        #{certificationUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="finishTime != null" >
+        #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="coachId != null" >
+        #{coachId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByGrssCoachAttestation" parameterType="com.grss.jlsx.core.bean.GrssCoachAttestation" >
+    update grss_coach_attestation
+    <set >
+      <if test="identityCardUrl != null" >
+        identity_card_url = #{identityCardUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="certificationUrl != null" >
+        certification_url = #{certificationUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="finishTime != null" >
+        finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="coachId != null" >
+        coach_id = #{coachId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByCoachId" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select * from grss_coach_attestation where coach_id=#{coachId}
+  </select>
+</mapper>

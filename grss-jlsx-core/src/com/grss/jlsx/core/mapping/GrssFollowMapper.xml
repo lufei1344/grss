@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssFollowDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssFollow" >
+    <id column="be_noticed_id" property="beNoticedId" jdbcType="VARCHAR" />
+    <id column="fans_id" property="fansId" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByKey" parameterType="com.grss.jlsx.core.bean.GrssFollow" >
+    delete from grss_follow
+    where be_noticed_id = #{beNoticedId,jdbcType=VARCHAR}
+      and fans_id = #{fansId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertByGrssFollow" parameterType="com.grss.jlsx.core.bean.GrssFollow" >
+    insert into grss_follow
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="beNoticedId != null" >
+        be_noticed_id,
+      </if>
+      <if test="fansId != null" >
+        fans_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="beNoticedId != null" >
+        #{beNoticedId,jdbcType=VARCHAR},
+      </if>
+      <if test="fansId != null" >
+        #{fansId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="selectFollowCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+  	select count(1) from  grss_follow where fans_id=#{userId}
+  </select>
+  <select id="selectFansCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+  	select count(1) from  grss_follow where be_noticed_id=#{userId}
+  </select>
+  <select id="selectFansRelationship" resultType="java.lang.Integer" parameterType="java.util.Map">
+  	select count(1) from grss_follow where be_noticed_id=#{mainUserId} and fans_id=#{secondUserId}
+  </select>
+   <select id="selectFollowRelationship" resultType="java.lang.Integer" parameterType="java.util.Map">
+  	select count(1) from grss_follow where fans_id=#{mainUserId} and be_noticed_id=#{secondUserId}
+  </select>
+</mapper>

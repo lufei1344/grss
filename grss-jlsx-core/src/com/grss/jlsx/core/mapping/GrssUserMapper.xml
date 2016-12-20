@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssUserDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssUser">
+    <id column="user_id" property="userId" javaType="java.lang.String"/>
+    <result column="user_phone" property="userPhone" javaType="java.lang.String"/>
+    <result column="user_weibo" property="userWeibo" javaType="java.lang.String"/>
+    <result column="user_qq" property="userQQ" javaType="java.lang.String"/>
+    <result column="user_weixin" property="userWeixin" javaType="java.lang.String"/>
+    <result column="nike_name" property="nikeName" javaType="java.lang.String"/>
+    <result column="user_photo" property="userPhoto" javaType="java.lang.String"/>
+    <result column="password" property="password" javaType="java.lang.String"/>
+    <result column="user_desc" property="userDesc" javaType="java.lang.String"/>
+    <result column="user_height" property="userHeight" javaType="java.lang.String" />
+    <result column="user_weight" property="userWeight" javaType="java.lang.String"/>
+    <result column="user_sex" property="userSex" javaType="java.lang.Integer" />
+    <result column="user_type" property="userType" javaType="java.lang.String" />
+    <result column="city" property="city" javaType="java.lang.String" />
+    <result column="is_activity" property="isActivity" javaType="java.lang.Integer" />
+    <result column="reg_date" property="regDate" javaType="java.util.Date" />
+    <result column="birthday" property="birthday" javaType="java.util.Date" />
+    <result column="status" property="status" javaType="java.lang.Integer" />
+    <result column="constellation" property="constellation" javaType="java.lang.String" />
+    <result column="coach_type" property="coachType" javaType="java.lang.String" />
+    <result column="info_complete" property="infoComplete" javaType="java.lang.Integer"/>
+    <result column="reg_coach_date" property="regCoachDate" javaType="java.util.Date"/>
+    <result column="user_level" property="userLevel" javaType="java.lang.Integer"/>
+    <result column="lng"  property="lng" javaType="java.lang.Double"/>
+    <result column="lat"  property="lat" javaType="java.lang.Double"/>
+    <result column="apply_coach_date"  property="applyCoachDate" javaType="java.util.Date"/>
+    <result column="to_club_name"  property="toClubName" javaType="java.lang.String"/>
+  </resultMap>
+ <resultMap type="com.grss.jlsx.core.po.GrssUserPo" id="BaseResultMapExtends" extends="BaseResultMap">
+ 	<association property="grssClub" javaType="com.grss.jlsx.core.bean.GrssClub">
+ 		<id column="club_id" property="clubId" jdbcType="VARCHAR" />
+		<result column="club_name" property="clubName" jdbcType="VARCHAR" />
+ 	</association>
+ 	<association property="grssCourse" javaType="com.grss.jlsx.core.bean.GrssCourse">
+ 		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="DECIMAL" />
+		<result column="order_count" property="orderCount" javaType="java.lang.Integer"/>
+ 	</association>
+ </resultMap>
+ 
+  <select id="selectByUserId" resultType="java.lang.String" resultMap="BaseResultMap">
+  	select * from grss_user u where u.user_id =#{userId}
+  </select>
+  <select id="selectGrssUserByAccount" resultMap="BaseResultMap" resultType="java.util.Map">
+  	select * from grss_user u where u.user_type in('user','coach') 
+  	<choose>
+  		<when test="weibo != null and weibo != ''">
+  			and u.user_weibo = #{weibo}
+  		</when>
+  		<when test="weixin != null and weixin != ''">
+  			and u.user_weixin = #{weixin}
+  		</when>
+  		<when test="qq != null and qq != ''">
+  			and u.user_qq = #{qq}
+  		</when>
+  		<otherwise>
+  			and u.user_phone = #{phone}
+  		</otherwise>
+  	</choose>
+  </select>
+  <insert id="insertGrssUser" parameterType="com.grss.jlsx.core.bean.GrssUser">
+ 	insert into grss_user
+	<trim prefix="(" suffix=")" suffixOverrides="," >
+	  <if test="userId != null" >
+	    user_id,
+	  </if>
+	  <if test="userPhone != null" >
+	    user_phone,
+	  </if>
+	  <if test="userWeibo != null" >
+	    user_weibo,
+	  </if>
+	  <if test="userQQ != null" >
+	    user_qq,
+	  </if>
+	  <if test="userWeixin != null" >
+	    user_weixin,
+	  </if>
+	  <if test="nikeName != null" >
+	    nike_name,
+	  </if>
+	  <if test="userPhoto != null" >
+	    user_photo,
+	  </if>
+	  <if test="password != null" >
+	    password,
+	  </if>
+	  <if test="userHeight != null" >
+	    user_height,
+	  </if>
+	  <if test="userWeight != null" >
+	    user_weight,
+	  </if>
+	  <if test="userSex != null" >
+	    user_sex,
+	  </if>
+	  <if test="userType != null" >
+	    user_type,
+	  </if>
+	  <if test="city != null" >
+	    city,
+	  </if>
+	  <if test="isActivity != null" >
+	    is_activity,
+	  </if>
+	  <if test="regDate != null" >
+	    reg_date,
+	  </if>
+	  <if test="birthday != null" >
+	    birthday,
+	  </if>
+	  <if test="status != null" >
+	    status,
+	  </if>
+	  <if test="constellation != null" >
+	    constellation,
+	  </if>
+	  <if test="userDesc != null" >
+	    user_desc,
+	  </if>
+	  <if test="coachType != null" >
+	    coach_type,
+	  </if>
+	  <if test="infoComplete != null">
+	  	info_complete,
+	  </if>
+	  <if test="userLevel != null">
+	  	user_level,
+	  </if>
+	  <if test="lng != null">
+	  	lng,
+	  </if>
+	  <if test="lat != null">
+	  	lat,
+	  </if>
+	  <if test="applyCoachDate != null">
+	  	apply_coach_date,
+	  </if>
+	  <if test="toClubName != null">
+	  	to_club_name,
+	  </if>
+	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides="," >
+	  <if test="userId != null" >
+	    #{userId},
+	  </if>
+	  <if test="userPhone != null" >
+	    #{userPhone},
+	  </if>
+	  <if test="userWeibo != null" >
+	    #{userWeibo},
+	  </if>
+	  <if test="userQQ != null" >
+	    #{userQQ},
+	  </if>
+	  <if test="userWeixin != null" >
+	    #{userWeixin},
+	  </if>
+	  <if test="nikeName != null" >
+	    #{nikeName},
+	  </if>
+	  <if test="userPhoto != null" >
+	    #{userPhoto},
+	  </if>
+	  <if test="password != null" >
+	    #{password},
+	  </if>
+	  <if test="userHeight != null" >
+	    #{userHeight},
+	  </if>
+	  <if test="userWeight != null" >
+	    #{userWeight},
+	  </if>
+	  <if test="userSex != null" >
+	    #{userSex},
+	  </if>
+	  <if test="userType != null" >
+	    #{userType},
+	  </if>
+	  <if test="city != null" >
+	    #{city},
+	  </if>
+	  <if test="isActivity != null" >
+	    #{isActivity},
+	  </if>
+	  <if test="regDate != null" >
+	    #{regDate},
+	  </if>
+	  <if test="birthday != null" >
+	    #{birthday},
+	  </if>
+	  <if test="status != null" >
+	    #{status},
+	  </if>
+	  <if test="constellation != null" >
+	    #{constellation},
+	  </if>
+	  <if test="userDesc != null" >
+	    #{userDesc},
+	  </if>
+	  <if test="coachType != null" >
+	    #{coachType},
+	  </if>
+	  <if test="infoComplete != null">
+	  	#{infoComplete},
+	  </if>
+	  <if test="regCoachDate != null">
+	  	#{regCoachDate},
+	  </if>
+	  <if test="userLevel != null">
+	  	#{userLevel},
+	  </if>
+	  <if test="lng != null">
+	  	#{lng},
+	  </if>
+	  <if test="lat != null">
+	  	#{lat},
+	  </if>
+	   <if test="applyCoachDate != null">
+	  	#{applyCoachDate},
+	  </if>
+	   <if test="toClubName != null">
+	  	#{toClubName},
+	  </if>
+	</trim>
+  </insert>
+  
+  <update id="updateGrssUser" parameterType="com.grss.jlsx.core.bean.GrssUser" >
+    update grss_user
+    <set >
+      <if test="userPhone != null" >
+        user_phone = #{userPhone},
+      </if>
+      <if test="userWeibo != null" >
+        user_weibo = #{userWeibo},
+      </if>
+      <if test="userQQ != null" >
+        user_qq = #{userQQ},
+      </if>
+      <if test="userWeixin != null" >
+        user_weixin = #{userWeixin},
+      </if>
+      <if test="nikeName != null" >
+        nike_name = #{nikeName},
+      </if>
+      <if test="userPhoto != null" >
+        user_photo = #{userPhoto},
+      </if>
+      <if test="password != null" >
+        password = #{password},
+      </if>
+      <if test="userHeight != null" >
+        user_height = #{userHeight},
+      </if>
+      <if test="userWeight != null" >
+        user_weight = #{userWeight},
+      </if>
+      <if test="userSex != null" >
+        user_sex = #{userSex},
+      </if>
+      <if test="userType != null" >
+        user_type = #{userType},
+      </if>
+      <if test="city != null" >
+        city = #{city},
+      </if>
+      <if test="isActivity != null" >
+        is_activity = #{isActivity},
+      </if>
+      <if test="regDate != null" >
+        reg_date = #{regDate},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="constellation != null" >
+        constellation = #{constellation},
+      </if>
+      <if test="userDesc != null" >
+        user_desc = #{userDesc},
+      </if>
+      <if test="coachType != null" >
+	   	coach_type = #{coachType},
+	  </if>
+	  <if test="infoComplete != null">
+	  	info_complete=#{infoComplete},
+	  </if>
+	  <if test="regCoachDate != null">
+	  	reg_coach_date = #{regCoachDate},
+	  </if>
+	  <if test="userLevel != null">
+	  	user_level = #{userLevel},
+	  </if>
+	  <if test="lng != null">
+	  	lng=#{lng},
+	  </if>
+	  <if test="lat != null">
+	  	lat=#{lat},
+	  </if>
+	  <if test="applyCoachDate != null">
+	  	apply_coach_date=#{applyCoachDate},
+	  </if>
+	  <if test="toClubName != null">
+	  	to_club_name=#{toClubName},
+	  </if>
+    </set>
+    where user_id = #{userId}
+  </update>
+  <select id="selectGrssUserByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	SELECT * FROM grss_user t WHERE t.user_type='admin' and t.`user_phone` = #{phone}
+  </select>
+  
+  <select id="selectGrssUserByParams" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	SELECT 
+  gu.* 
+FROM
+   grss_posts gp,
+  `grss_posts_admire` gpa,
+  `grss_user` gu 
+WHERE gp.id = gpa.posts_id 
+  AND gpa.user_id = gu.user_id 
+  AND gp.`id` = #{postsId}  
+  	<choose>
+  		<when test="offset != null and pageSize != null">
+  			LIMIT #{offset},#{pageSize}
+  		</when>
+  		<otherwise>
+  			LIMIT 0,6
+  		</otherwise>
+  	</choose>
+  </select>
+  
+  <select id="selectGrssUserByKeyword" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select user_id,user_phone,nike_name,user_photo,user_sex,user_desc from grss_user
+  	<where>
+  		<if test="phone!=null and keyword!=null and keyword != ''">
+  			(user_phone=#{phone} or nike_name like "%"#{keyword}"%")
+  		</if>
+  		<if test="phone==null and keyword!=null and keyword != ''">
+  			and nike_name like "%"#{keyword}"%" 
+  		</if>
+  	</where>
+  	limit #{offset},#{pageSize} ;
+  </select>
+  <select id="selectFollowUsersByUserId" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select user_id,user_phone,nike_name,user_photo,user_sex,user_desc,user_type from grss_user
+		where user_id in (select be_noticed_id from grss_follow where fans_id=#{userId})
+  		limit #{offset},#{pageSize} ;
+  </select>
+  <select id="selectFansUsersByUserId" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select user_id,user_phone,nike_name,user_photo,user_sex,user_desc,user_type from grss_user
+		where user_id in (select fans_id from grss_follow where be_noticed_id=#{userId})
+  		limit #{offset},#{pageSize} ;
+  </select>
+  <select id="selectUsersByIdsStr" parameterType="java.util.List" resultMap="BaseResultMap">
+ 	 select * from grss_user where user_id in 
+  	<foreach item="userId" index="index" collection="userIds" open="(" separator="," close=")">  
+	 	#{userId}
+	 </foreach> 
+  </select>
+  
+  <select id="listByHot"  resultMap="BaseResultMapExtends">
+   			SELECT
+				model.*, gc.club_id,
+				gc.club_name,
+				gco.id,
+				gco. NAME,
+				gco.price
+			FROM
+				grss_user model
+			LEFT JOIN grss_club_coach gcc ON gcc.user_id = model.user_id
+			LEFT JOIN grss_club gc ON gcc.club_id = gc.club_id
+			LEFT JOIN grss_course gco ON gco.coach_id = model.user_id
+			LEFT JOIN 
+(
+SELECT be_noticed_id,count(1) fs_count from grss_follow group by be_noticed_id) as fs_data ON model.user_id=fs_data.be_noticed_id
+			WHERE
+				model.user_type = "coach" and model.`status`=1 
+    	<if test="clubId != null">
+    		 and gcc.club_id = #{clubId}
+    	</if>
+	  	<if test="grssUser.userSex != null">
+	  		and  model.user_sex = #{grssUser.userSex}
+	  	</if>
+	  	<if test="grssUser.nikeName != null">
+	  		and  model.nike_name like "%"#{grssUser.nikeName}"%"
+	  	</if>
+
+  	order by fs_data.fs_count DESC 
+  	limit #{offset},#{pageSize}
+  </select>
+  
+  <select id="listByNewest"  resultMap="BaseResultMapExtends">
+	  	 SELECT
+				model.*, gc.club_id,
+				gc.club_name,
+				gco.id,
+				gco. NAME,
+				gco.price
+			FROM
+				grss_user model
+			LEFT JOIN grss_club_coach gcc ON gcc.user_id = model.user_id
+			LEFT JOIN grss_club gc ON gcc.club_id = gc.club_id
+			LEFT JOIN grss_course gco ON gco.coach_id = model.user_id
+			LEFT JOIN (
+				select course_id,count(1) as order_count from grss_order where order_date>=CONCAT(YEAR(curdate()),'-',DAY(curdate()),'-01 00:00:00')  and `state`=2 GROUP BY course_id
+			) order_data ON gco.id=order_data.course_id
+			WHERE
+				model.user_type = "coach"  and model.`status`=1 
+    	<if test="clubId != null">
+    		and gcc.club_id = #{clubId}
+    	</if>
+     	<if test="grssUser.area != null">
+     		and gc.area =#{grssUser.area}
+     	</if>
+	  	<if test="grssUser.userSex != null">
+	  		and  model.user_sex = #{grssUser.userSex}
+	  	</if>
+	  	<if test="grssUser.nikeName != null">
+	  		and  model.nike_name like "%"#{grssUser.nikeName}"%"
+	  	</if>
+	 	ORDER BY order_data.order_count desc,model.reg_date DESC 
+	 	limit #{offset},#{pageSize}
+  </select>
+  
+  <select id="listByTop"  resultMap="BaseResultMapExtends">
+SELECT
+	model.*, gc.club_id,
+	gc.club_name,
+	gco.id,
+	gco. NAME,
+	gco.price,
+	IFNULL(h.order_count,0) order_count
+FROM
+	grss_user model
+LEFT JOIN grss_club_coach gcc ON gcc.user_id = model.user_id
+LEFT JOIN grss_club gc ON gcc.club_id = gc.club_id
+LEFT JOIN grss_course gco ON gco.coach_id = model.user_id
+LEFT JOIN (
+	SELECT
+		gu.user_id,
+		count(0) order_count
+	FROM
+		grss_user gu,
+		grss_course gc,
+		grss_order go
+	WHERE
+		gu.user_id = gc.coach_id and
+		go.course_id = gc.id
+	AND go.state = 2
+	AND DATE_FORMAT(go.order_date, '%Y%m') = DATE_FORMAT(now(), '%Y%m')
+	GROUP BY
+		gu.user_id
+) h on model.user_id = h.user_id
+WHERE
+	model.user_type = "coach"
+		and model.`status` = 1
+    	<if test="clubId != null">
+    	 	and gcc.club_id = #{clubId}
+    	</if>
+	  	<if test="grssUser.userSex != null">
+	  		and  model.user_sex = #{grssUser.userSex}
+	  	</if>
+	  	<if test="grssUser.nikeName != null">
+	  		and  model.nike_name like "%"#{grssUser.nikeName}"%"
+	  	</if>
+	ORDER BY
+	order_count desc
+	  	limit #{offset},#{pageSize}
+  </select>
+  
+  <select id="selectGrssUserByCommunityId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	SELECT gu.* FROM `grss_user_community` guc,`grss_user` gu WHERE guc.`user_id` = gu.`user_id` AND guc.`community_id` = #{communityId}
+  </select>
+  
+  <select id="selectNearbyUser" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	SELECT 
+  * 
+FROM
+  `grss_user` gu 
+WHERE LEFT(gu.lng, LOCATE('.', gu.lng) - 1) = LEFT(
+    #{lng},
+    LOCATE('.', #{lng}) - 1
+  ) 
+  AND LEFT(gu.lat, LOCATE('.', gu.lat) - 1) = LEFT(
+    #{lat},
+    LOCATE('.', #{lat}) - 1
+  )
+  AND gu.user_id != #{userId}  
+  <if test="sex!=null">
+  	AND gu.user_sex=#{sex} 
+  </if>
+  limit #{offset},#{pageSize}
+  </select>
+  <select id="selectGrssUserList" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	SELECT * FROM grss_user gu WHERE gu.user_type = #{userType}
+  		<if test="phone != null">
+  			and gu.`user_phone` = #{phone}
+  		</if>
+  		<if test="infoComplete != null">
+  			and gu.`info_complete` = #{infoComplete}
+  		</if>
+  		<if test="status != null">
+  			and gu.`status` = #{status} 
+  		</if>
+  		<if test="startDate != null">
+  			and DATE_FORMAT(gu.reg_date,'%Y-%m-d') &gt;= #{startDate}
+  		</if>
+  		<if test="endDate != null">
+  			and DATE_FORMAT(gu.reg_date,'%Y-%m-d') &lt;= #{endDate}
+  		</if>
+  		order by gu.reg_date desc
+  	 LIMIT #{offset},#{pageSize}
+  </select>
+  <select id="selectGrssUserCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+  		SELECT COUNT(0) FROM grss_user gu where gu.user_type = #{userType}
+  		<if test="phone != null">
+  			 and gu.`user_phone` = #{phone}
+  		</if>
+  		<if test="infoComplete != null">
+  			and gu.`info_complete` = #{infoComplete}
+  		</if>
+  		<if test="status != null">
+  			and gu.`status` = #{status} 
+  		</if>
+  		<if test="startDate != null">
+  			and DATE_FORMAT(gu.reg_date,'%Y-%m-d') &gt;= #{startDate}
+  		</if>
+  		<if test="endDate != null">
+  			and DATE_FORMAT(gu.reg_date,'%Y-%m-d') &lt;= #{endDate}
+  		</if>
+  </select>
+  
+  <select id="selectGrssUserAudit" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	SELECT * FROM grss_user gu WHERE  gu.`status` in(0,3)
+  		<if test="phone != null">
+  			 and gu.`user_phone` = #{phone}
+  		</if>
+  		<if test="infoComplete != null">
+  			and gu.`info_complete` = #{infoComplete}
+  		</if>
+  		<if test="startDate != null">
+  			and DATE_FORMAT(gu.reg_date,'%Y-%m-d') &gt;= #{startDate}
+  		</if>
+  		<if test="endDate != null">
+  			and DATE_FORMAT(gu.reg_date,'%Y-%m-d') &lt;= #{endDate}
+  		</if>
+  		order by gu.reg_date desc
+  		LIMIT #{offset},#{pageSize}
+  </select>
+  <select id="selectGrssUserAuditCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+  	SELECT count(0) FROM grss_user gu WHERE  gu.`status` in(0,3)
+  		<if test="phone != null">
+  			 and gu.`user_phone` = #{phone}
+  		</if>
+  		<if test="infoComplete != null">
+  			and gu.`info_complete` = #{infoComplete}
+  		</if>
+  		<if test="startDate != null">
+  			and DATE_FORMAT(gu.reg_date,'%Y-%m-d') &gt;= #{startDate}
+  		</if>
+  		<if test="endDate != null">
+  			and DATE_FORMAT(gu.reg_date,'%Y-%m-d') &lt;= #{endDate}
+  		</if>
+  </select>
+  
+  <select id="selectGrssUserByApplyCoachDate" resultMap="BaseResultMap">
+  	select * from grss_user gu where gu.status = 3 and IFNULL(TIMESTAMPDIFF(MINUTE,gu.apply_coach_date,now()),0) >= 20;
+  </select>
+  
+  <select id="selectByCoachId" parameterType="java.lang.String" resultMap="BaseResultMapExtends">
+  	SELECT
+		model.*, gc.club_id,
+		gc.club_name,
+		gco.id,
+		gco. NAME,
+		gco.price
+	FROM
+		grss_user model
+	LEFT JOIN grss_club_coach gcc ON gcc.user_id = model.user_id
+	LEFT JOIN grss_club gc ON gcc.club_id = gc.club_id
+	LEFT JOIN grss_course gco ON gco.coach_id = model.user_id
+	WHERE model.user_id=#{userId}
+  </select>
+  <select id="selectGrssUserAll" resultMap="BaseResultMap">
+  	select * from grss_user gu where gu.status != 2
+  </select>
+  <select id="selectHotUser" resultMap="BaseResultMap" parameterType="java.util.Map">
+select gu.* from grss_user gu LEFT JOIN 
+(
+SELECT be_noticed_id,count(1) fs_count from grss_follow group by be_noticed_id) as fs_data ON gu.user_id=fs_data.be_noticed_id
+where `status`=1 order by fs_data.fs_count DESC  LIMIT #{offset},#{pageSize}
+  </select>
+</mapper>

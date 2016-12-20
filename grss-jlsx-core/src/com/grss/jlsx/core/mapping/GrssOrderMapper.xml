@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssOrderDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssOrder" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="VARCHAR" />
+    <result column="course_id" property="courseId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="pay_date" property="payDate" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="order_date" property="orderDate" jdbcType="TIMESTAMP" />
+    <result column="user_comment" property="userComment" jdbcType="VARCHAR" />
+    <result column="coach_comment" property="coachComment" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="com.grss.jlsx.core.bean.GrssOrder" id="BaseResultMapExtends" extends="BaseResultMap">
+  	<association property="grssUser" javaType="com.grss.jlsx.core.bean.GrssUser">
+  		<id column="user_id_u" property="userId" javaType="java.lang.String"/>
+	    <result column="nike_name" property="nikeName" javaType="java.lang.String"/>
+	    <result column="user_photo" property="userPhoto" javaType="java.lang.String"/>
+	    <result column="user_type" property="userType" javaType="java.lang.String"/>
+	    <result column="user_sex" property="userSex" javaType="java.lang.Integer" />
+  	</association>
+  	<association property="userEx" javaType="com.grss.jlsx.core.bean.GrssUserEx">
+  	    <id column="user_id_ex" property="userId" jdbcType="VARCHAR" />
+	 	<result column="age" property="age" jdbcType="VARCHAR" />
+	    <result column="sex" property="sex" jdbcType="INTEGER" />
+	    <result column="height" property="height" jdbcType="VARCHAR" />
+	    <result column="weight" property="weight" jdbcType="VARCHAR" />
+	    <result column="habitus_exp" property="habitusExp" jdbcType="VARCHAR" />
+	    <result column="waist" property="waist" jdbcType="VARCHAR" />
+	    <result column="hipline" property="hipline" jdbcType="VARCHAR" />
+	    <result column="hipline_ratio" property="hiplineRatio" jdbcType="VARCHAR" />
+	    <result column="body_fat" property="bodyFat" jdbcType="VARCHAR" />
+	    <result column="metabolism_ratio" property="metabolismRatio" jdbcType="VARCHAR" />
+	    <result column="still_heartbeat" property="stillHeartbeat" jdbcType="VARCHAR" />
+	    <result column="blood_pressure" property="bloodPressure" jdbcType="VARCHAR" />
+	    <result column="front_image_url" property="frontImageUrl" jdbcType="VARCHAR" />
+	    <result column="side_image_url" property="sideImageUrl" jdbcType="VARCHAR" />
+	    <result column="rear_image_url" property="rearImageUrl" jdbcType="VARCHAR" />
+  	</association>
+  </resultMap>
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select *
+    from grss_order
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.String" >
+    delete from grss_order
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertByGrssOrder" parameterType="com.grss.jlsx.core.bean.GrssOrder" >
+    insert into grss_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="courseId != null" >
+        course_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="payDate != null" >
+        pay_date,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="orderDate != null" >
+        order_date,
+      </if>
+      <if test="userComment != null" >
+        user_comment,
+      </if>
+      <if test="coachComment != null" >
+        coach_comment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=VARCHAR},
+      </if>
+      <if test="courseId != null" >
+        #{courseId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="payDate != null" >
+        #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="orderDate != null" >
+        #{orderDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userComment != null" >
+        #{userComment,jdbcType=VARCHAR},
+      </if>
+      <if test="coachComment != null" >
+        #{coachComment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByGrssOrder" parameterType="com.grss.jlsx.core.bean.GrssOrder" >
+    update grss_order
+    <set >
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=VARCHAR},
+      </if>
+      <if test="courseId != null" >
+        course_id = #{courseId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="payDate != null" >
+        pay_date = #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="orderDate != null" >
+        order_date = #{orderDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userComment != null" >
+        user_comment = #{userComment,jdbcType=VARCHAR},
+      </if>
+       <if test="coachComment != null" >
+        coach_comment = #{coachComment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectOrderCountByCoach" resultType="java.lang.Integer" parameterType="java.util.List">
+  	select count(1) from grss_order go where go.state = 2 and go.course_id in
+  	<foreach collection="courseIds" index="index" item="courseId" open="(" separator="," close=")">
+       #{courseId}
+    </foreach>
+  </select>
+  <select id="selectOrdersByCourseId"  resultMap="BaseResultMapExtends" parameterType="java.util.Map">
+  	select 
+  	go.*,
+  	gu.user_id as user_id_u,
+  	gu.nike_name,
+  	gu.user_photo,
+  	gu.user_type,
+  	gu.user_sex,
+  	gue.user_id as user_id_ex,
+  	gue.age,
+  	gue.sex,
+  	gue.height,
+  	gue.weight,
+  	gue.habitus_exp,
+  	gue.waist,
+  	gue.hipline,
+  	gue.hipline_ratio,
+  	gue.body_fat, 
+    gue.metabolism_ratio,
+    gue.still_heartbeat,
+    gue.blood_pressure,
+    gue.front_image_url,
+    gue.side_image_url,
+    gue.rear_image_url
+  	from grss_order go left join grss_user gu on go.user_id=gu.user_id left join grss_user_ex gue on go.user_id=gue.user_id 
+  	where course_id=#{courseId} and state=#{state} order by go.order_date desc  LIMIT #{offset},#{pageSize}
+  </select>
+  
+  <select id="selectOrderCounts" resultType="java.util.Map" parameterType="java.util.Map" >
+  	select 
+  	DATE_FORMAT(order_date,'%Y-%m-%d') orderDate,
+  	count(1) orderCount   
+  	from grss_order where course_id=#{courseId} and state=2 and 
+  	order_date BETWEEN #{startDate} AND NOW() GROUP BY  DATE_FORMAT(order_date,'%Y-%m-%d');
+  </select>
+  
+   <select id="selectCoachOrderCount" resultType="java.lang.Integer" parameterType="java.lang.String" >
+  	select 
+  	count(1) orderCount   
+  	from grss_order go where go.state = 2 and  course_id=#{courseId}
+  </select>
+  
+  <select id="findGrssOrder" parameterType="java.util.Map" resultMap="BaseResultMapExtends">
+	 select model.*,gu.user_id user_id_u,gu.nike_name from grss_order model,grss_user gu where model.user_id = gu.user_id
+	  	<if test="name != null">
+	  		and model.name like "%"#{name}"%"
+	  	</if>
+	  	<if test="state != null">
+	  		and model.state = #{state}
+	  	</if>
+	  	<if test="startDate != null">
+				and DATE_FORMAT(model.order_date,'%Y-%m-%d') &gt;= #{startDate}
+			</if>
+			<if test="endDate != null">
+				and DATE_FORMAT(model.order_date,'%Y-%m-%d') &lt;= #{endDate}
+			</if>
+	  
+	  order by model.order_date desc
+	  LIMIT #{offset},#{pageSize}
+	  
+  </select>
+  
+  <select id="findGrssOrderCount" parameterType="java.util.Map"  resultType="java.lang.Integer">
+  		select count(model.id) from grss_order model,grss_user gu where model.user_id = gu.user_id
+		  	<if test="name != null">
+		  		and model.name like "%"#{name}"%"
+		  	</if>
+		  	<if test="state != null">
+		  		and model.state = #{state}
+		  	</if>
+		  	<if test="startDate != null">
+					and DATE_FORMAT(model.order_date,'%Y-%m-%d') &gt;= #{startDate}
+				</if>
+				<if test="endDate != null">
+					and DATE_FORMAT(model.order_date,'%Y-%m-%d') &lt;= #{endDate}
+				</if>
+   </select>
+   
+   
+   <update id="updateMissOrder" parameterType="java.util.Date" >
+    update grss_order set state = 2 where state=1 and order_date &gt;= #{missTime}
+  </update>
+
+  <select id="selectOrderByUserId" resultMap="BaseResultMapExtends" parameterType="java.util.Map">
+  	SELECT
+	go.*,
+	gu.nike_name,
+	gu.user_photo,
+	gu.user_id user_id_u
+	FROM
+	`grss_order` go,
+	grss_course gc,
+	grss_user gu
+	WHERE
+	go.course_id = gc.id
+	AND gc.coach_id = gu.user_id
+	AND go.state = 2
+	AND go.user_id = #{userId}
+  	</select>
+  	<select id="selectOrderCurrentDate" parameterType="java.lang.Integer" resultMap="BaseResultMapExtends">
+  		select * from grss_order go where  go.state = 1 and IFNULL(TIMESTAMPDIFF(MINUTE,go.pay_date,now()),0) &gt;= #{minute}
+  	</select>
+</mapper>

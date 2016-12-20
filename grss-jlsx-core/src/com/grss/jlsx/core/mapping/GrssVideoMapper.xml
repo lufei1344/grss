@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssVideoDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssVideo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="upload_date" property="uploadDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="cat_id" property="catId" jdbcType="VARCHAR" />
+    <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap type="com.grss.jlsx.core.bean.GrssVideo" id="BaseResultMapExtends" extends="BaseResultMap">
+  	<result column="cat_name" property="catName" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select *
+    from grss_video
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.String" >
+    delete from grss_video
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertByGrssVideo" parameterType="com.grss.jlsx.core.bean.GrssVideo" >
+    insert into grss_video
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="uploadDate != null" >
+        upload_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="catId != null" >
+        cat_id,
+      </if>
+      <if test="imgUrl != null" >
+        img_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadDate != null" >
+        #{uploadDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="catId != null" >
+        #{catId,jdbcType=VARCHAR},
+      </if>
+       <if test="imgUrl != null" >
+        #{imgUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByGrssVideo" parameterType="com.grss.jlsx.core.bean.GrssVideo" >
+    update grss_video
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadDate != null" >
+        upload_date = #{uploadDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="catId != null" >
+        cat_id = #{catId,jdbcType=VARCHAR},
+      </if>
+       <if test="imgUrl != null" >
+        img_url = #{imgUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectGrssVideoByCatIdList" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from grss_video gv where gv.cat_id = #{catId}
+  </select>
+  <select id="selectVideoList" resultMap="BaseResultMapExtends" parameterType="java.util.Map">
+  	select gv.*,gvc.name as cat_name  
+  	from grss_video gv left join grss_video_category gvc on gv.cat_id=gvc.id
+  	<where>
+  		<if test="videoName!=null and videoName!=''">
+  			gv.name like "%"#{videoName}"%"
+  		</if>
+  		<if test="cateCode!=null and cateCode!=''">
+  			and gv.cat_id in(select id from grss_video_category where cate_code like #{cateCode}"%") 
+  		</if>
+  		<if test="startDate!=null and startDate!=''">
+  			and gv.upload_date &gt;=#{startDate}" 00:00:00"
+  		</if>
+  		<if test="endDate!=null and endDate!=''">
+  			and gv.upload_date &lt;=#{endDate}" 23:59:59"
+  		</if>
+  	</where>
+  	order by upload_date desc limit #{offset},#{pageSize};
+  </select>
+  <select id="selectVideoListCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+  	select count(1)  
+  	from grss_video gv 
+  	<where>
+  		<if test="videoName!=null and videoName!=''">
+  			gv.name like "%"#{videoName}"%"
+  		</if>
+  		<if test="cateCode!=null and cateCode!=''">
+  			and gv.cat_id in(select id from grss_video_category where cate_code like #{cateCode}"%") 
+  		</if>
+  		<if test="startDate!=null and startDate!=''">
+  			and gv.upload_date &gt;=#{staetDate}" 00:00:00"
+  		</if>
+  		<if test="endDate!=null and endDate!=''">
+  			and gv.upload_date &lt;=#{endDate}" 23:59:59"
+  		</if>
+  	</where>
+  </select>
+  <select id="selectGrssVideoByCatNameAndOrderId" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	SELECT
+	*
+	FROM
+	`grss_video` gv
+	WHERE
+	gv.id IN (
+		SELECT
+			gvo.vido_id
+		FROM
+			`grss_video_order` gvo
+		WHERE
+			gvo.order_id = #{orderId}
+		AND gvo.vido_cat_name3 = #{catName_level3}
+	)
+  
+  </select>
+</mapper>

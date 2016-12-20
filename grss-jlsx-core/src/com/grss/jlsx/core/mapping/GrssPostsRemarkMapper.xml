@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssPostsRemarkDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssPostsRemark" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="posts_id" property="postsId" jdbcType="VARCHAR" />
+    <result column="remark_user_id" property="remarkUserId" jdbcType="VARCHAR" />
+    <result column="reply_user_id" property="replyUserId" jdbcType="VARCHAR" />
+    <result column="remark_date" property="remarkDate" jdbcType="TIMESTAMP" />
+    
+    <result column="posts_id" property="postsId" jdbcType="VARCHAR" />
+    <result column="remark_name" property="remarkName" jdbcType="VARCHAR" />
+    <result column="remark_user_img" property="remarkUserImg" jdbcType="VARCHAR" />
+    <result column="reply_name" property="replyName" jdbcType="VARCHAR" />
+    
+  </resultMap>
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * 
+    from grss_posts_remark
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.String" >
+    delete from grss_posts_remark
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertByGrssPostsRemark" parameterType="com.grss.jlsx.core.bean.GrssPostsRemark" >
+    insert into grss_posts_remark
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="postsId != null" >
+        posts_id,
+      </if>
+      <if test="remarkUserId != null" >
+        remark_user_id,
+      </if>
+      <if test="replyUserId != null" >
+        reply_user_id,
+      </if>
+      <if test="remarkDate != null" >
+        remark_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="postsId != null" >
+        #{postsId,jdbcType=VARCHAR},
+      </if>
+      <if test="remarkUserId != null" >
+        #{remarkUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="replyUserId != null" >
+        #{replyUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="remarkDate != null" >
+        #{remarkDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByGrssPostsRemark" parameterType="com.grss.jlsx.core.bean.GrssPostsRemark" >
+    update grss_posts_remark
+    <set >
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="postsId != null" >
+        posts_id = #{postsId,jdbcType=VARCHAR},
+      </if>
+      <if test="remarkUserId != null" >
+        remark_user_id = #{remarkUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="replyUserId != null" >
+        reply_user_id = #{replyUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="remarkDate != null" >
+        remark_date = #{remarkDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectGrssPostsRemarkByParams" parameterType="java.util.Map" resultMap="BaseResultMap">
+SELECT 
+  gpr.id,
+  gpr.content,
+  gpr.remark_date,
+  gpr.posts_id,
+  gpr.remark_user_id,
+  gu.nike_name remark_name,
+  gu.user_photo remark_user_img,
+  h.huifu_id reply_user_id,
+  h.huifu_name reply_name 
+FROM
+  `grss_user` gu,
+  `grss_posts_remark` gpr 
+  LEFT JOIN 
+    (SELECT 
+      gu.user_id huifu_id,
+      gu.nike_name huifu_name 
+    FROM
+      `grss_user` gu,
+      `grss_posts_remark` gpr 
+    WHERE gpr.reply_user_id = gu.user_id 
+      AND gpr.`posts_id` = #{postsId}) h 
+    ON gpr.reply_user_id = h.huifu_id 
+WHERE gpr.remark_user_id = gu.user_id 
+  AND gpr.`posts_id` = #{postsId} 
+LIMIT #{offset},#{pageSize}
+  </select>
+  <delete id="deleteByPostsId" parameterType="java.lang.String">
+  	delete from `grss_posts_remark` where posts_id = #{userId}
+  </delete>
+</mapper>

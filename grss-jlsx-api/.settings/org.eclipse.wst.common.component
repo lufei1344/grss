@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="grss-jlsx-api">
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/config"/>
+        <dependent-module archiveName="grss-jlsx-core.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/grss-jlsx-core/grss-jlsx-core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="java-output-path" value="/grss-jlsx-api/build/classes"/>
+        <property name="context-root" value="grss-api"/>
+    </wb-module>
+</project-modules>

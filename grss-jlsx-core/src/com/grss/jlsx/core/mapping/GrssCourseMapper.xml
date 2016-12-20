@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssCourseDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssCourse" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="coach_id" property="coachId" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select  * 
+    from grss_course
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.String" >
+    delete from grss_course
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertByGrssCourse" parameterType="com.grss.jlsx.core.bean.GrssCourse" >
+    insert into grss_course
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="coachId != null" >
+        coach_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="coachId != null" >
+        #{coachId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByGrssCourse" parameterType="com.grss.jlsx.core.bean.GrssCourse" >
+    update grss_course
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="coachId != null" >
+        coach_id = #{coachId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectCourseIdsByCoachId" resultType="java.lang.String" parameterType="java.lang.String">
+  	select id from grss_course where coach_id=#{coachId};
+  </select>
+  <select id="selectByCoachId" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select * from grss_course where coach_id=#{coachId} limit 1;
+  </select>
+</mapper>

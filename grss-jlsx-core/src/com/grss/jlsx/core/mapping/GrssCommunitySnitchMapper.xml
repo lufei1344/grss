@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssCommunitySnitchDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssCommunitySnitch" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="snitch_person_id" property="snitchPersonId" jdbcType="VARCHAR" />
+    <result column="community_id" property="communityId" jdbcType="VARCHAR" />
+    <result column="snitch_time" property="snitchTime" jdbcType="TIMESTAMP" />
+    <result column="snitch_content" property="snitchContent" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select *
+    from grss_community_snitch
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.String" >
+    delete from grss_community_snitch
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertByGrssCommunitySnitch" parameterType="com.grss.jlsx.core.bean.GrssCommunitySnitch" >
+    insert into grss_community_snitch
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="snitchPersonId != null" >
+        snitch_person_id,
+      </if>
+      <if test="communityId != null" >
+        community_id,
+      </if>
+      <if test="snitchTime != null" >
+        snitch_time,
+      </if>
+      <if test="snitchContent != null" >
+        snitch_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="snitchPersonId != null" >
+        #{snitchPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="communityId != null" >
+        #{communityId,jdbcType=VARCHAR},
+      </if>
+      <if test="snitchTime != null" >
+        #{snitchTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="snitchContent != null" >
+        #{snitchContent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByGrssCommunitySnitch" parameterType="com.grss.jlsx.core.bean.GrssCommunitySnitch" >
+    update grss_community_snitch
+    <set >
+      <if test="snitchPersonId != null" >
+        snitch_person_id = #{snitchPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="communityId != null" >
+        community_id = #{communityId,jdbcType=VARCHAR},
+      </if>
+      <if test="snitchTime != null" >
+        snitch_time = #{snitchTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="snitchContent != null" >
+        snitch_content = #{snitchContent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

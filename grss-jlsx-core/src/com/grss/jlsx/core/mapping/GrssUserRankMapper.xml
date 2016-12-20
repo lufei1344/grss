@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssUserRankDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssUserRank" >
+    <id column="rank_id" property="rankId" jdbcType="INTEGER" />
+    <result column="min_level" property="minLevel" jdbcType="INTEGER" />
+    <result column="max_level" property="maxLevel" jdbcType="INTEGER" />
+    <result column="series" property="series" jdbcType="INTEGER" />
+    <result column="rank_name" property="rankName" jdbcType="VARCHAR" />
+    <result column="rank_image" property="rankImage" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    *
+    from grss_user_rank
+    where rank_id = #{rankId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from grss_user_rank
+    where rank_id = #{rankId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.grss.jlsx.core.bean.GrssUserRank" >
+    insert into grss_user_rank (rank_id, min_level, max_level, 
+      series, rank_name, rank_image
+      )
+    values (#{rankId,jdbcType=INTEGER}, #{minLevel,jdbcType=INTEGER}, #{maxLevel,jdbcType=INTEGER}, 
+      #{series,jdbcType=INTEGER}, #{rankName,jdbcType=VARCHAR}, #{rankImage,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.grss.jlsx.core.bean.GrssUserRank" >
+    insert into grss_user_rank
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rankId != null" >
+        rank_id,
+      </if>
+      <if test="minLevel != null" >
+        min_level,
+      </if>
+      <if test="maxLevel != null" >
+        max_level,
+      </if>
+      <if test="series != null" >
+        series,
+      </if>
+      <if test="rankName != null" >
+        rank_name,
+      </if>
+      <if test="rankImage != null" >
+        rank_image,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rankId != null" >
+        #{rankId,jdbcType=INTEGER},
+      </if>
+      <if test="minLevel != null" >
+        #{minLevel,jdbcType=INTEGER},
+      </if>
+      <if test="maxLevel != null" >
+        #{maxLevel,jdbcType=INTEGER},
+      </if>
+      <if test="series != null" >
+        #{series,jdbcType=INTEGER},
+      </if>
+      <if test="rankName != null" >
+        #{rankName,jdbcType=VARCHAR},
+      </if>
+      <if test="rankImage != null" >
+        #{rankImage,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.grss.jlsx.core.bean.GrssUserRank" >
+    update grss_user_rank
+    <set >
+      <if test="minLevel != null" >
+        min_level = #{minLevel,jdbcType=INTEGER},
+      </if>
+      <if test="maxLevel != null" >
+        max_level = #{maxLevel,jdbcType=INTEGER},
+      </if>
+      <if test="series != null" >
+        series = #{series,jdbcType=INTEGER},
+      </if>
+      <if test="rankName != null" >
+        rank_name = #{rankName,jdbcType=VARCHAR},
+      </if>
+      <if test="rankImage != null" >
+        rank_image = #{rankImage,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where rank_id = #{rankId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.grss.jlsx.core.bean.GrssUserRank" >
+    update grss_user_rank
+    set min_level = #{minLevel,jdbcType=INTEGER},
+      max_level = #{maxLevel,jdbcType=INTEGER},
+      series = #{series,jdbcType=INTEGER},
+      rank_name = #{rankName,jdbcType=VARCHAR},
+      rank_image = #{rankImage,jdbcType=VARCHAR}
+    where rank_id = #{rankId,jdbcType=INTEGER}
+  </update>
+</mapper>

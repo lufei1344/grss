@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssSysMessageDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssSysMessage" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="link_url" property="linkUrl" jdbcType="VARCHAR" />
+    <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+    <result column="recipient_user_id" property="recipientUserId" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="send_time" property="sendTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * 
+    from grss_sys_message
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from grss_sys_message
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertSelective" parameterType="com.grss.jlsx.core.bean.GrssSysMessage" >
+    insert into grss_sys_message
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="linkUrl != null" >
+        link_url,
+      </if>
+      <if test="imgUrl != null" >
+        img_url,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="sendTime != null" >
+        send_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="linkUrl != null" >
+        #{linkUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="imgUrl != null" >
+        #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByGrssSysMessage" parameterType="com.grss.jlsx.core.bean.GrssSysMessage" >
+    update grss_sys_message
+    <set >
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="linkUrl != null" >
+        link_url = #{linkUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="imgUrl != null" >
+        img_url = #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        send_time = #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectMessagesByUserId"  resultMap="BaseResultMap" parameterType="java.util.Map" >
+  	select gsm.*,gsmu.user_id  recipient_user_id from grss_sys_message gsm ,grss_sys_message_user gsmu where gsm.id = gsmu.message_id and gsmu.user_id = #{userId} order by send_time desc limit #{offset},#{pageSize} ;
+  </select>
+  <select id="selectGrssSysMessageList" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select * from grss_sys_message gsm 
+	<where>
+		<if test="title != null">
+			gsm.title like "%"#{title}"%"
+		</if>
+	</where>
+  	order by send_time desc LIMIT #{offset},#{pageSize} 
+  </select>
+  <select id="selectGrssSysMessageCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+  	select count(0) from grss_sys_message gsm 
+  	<where>
+		<if test="title != null">
+			gsm.title like "%"#{title}"%"
+		</if>
+	</where>
+  </select>
+</mapper>

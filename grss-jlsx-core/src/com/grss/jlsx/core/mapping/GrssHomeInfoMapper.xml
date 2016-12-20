@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssHomeInfoDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssHomeInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="image_url" property="imageUrl" jdbcType="VARCHAR" />
+    <result column="is_show" property="isShow" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="link_url" property="linkUrl" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" javaType="java.util.Date"/>
+  </resultMap> 
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select *
+    from grss_home_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.Integer" >
+    delete from grss_home_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertByGrssHomeInfo" parameterType="com.grss.jlsx.core.bean.GrssHomeInfo" >
+    insert into grss_home_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="imageUrl != null" >
+        image_url,
+      </if>
+      <if test="isShow != null" >
+        is_show,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="linkUrl != null" >
+        link_url,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="imageUrl != null" >
+        #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="isShow != null" >
+        #{isShow,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="linkUrl != null" >
+        #{linkUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByGrssHomeInfo" parameterType="com.grss.jlsx.core.bean.GrssHomeInfo" >
+    update grss_home_info
+    <set >
+      <if test="imageUrl != null" >
+        image_url = #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="isShow != null" >
+        is_show = #{isShow,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="linkUrl != null" >
+        link_url = #{linkUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectGrssHomeInfoByType" resultMap="BaseResultMap" parameterType="java.util.List">
+  	SELECT * FROM `grss_home_info` t WHERE t.is_show =1 AND t.type in
+  	<foreach item="type" index="index" collection="homeTypes" open="(" separator="," close=")">  
+	 		#{type}
+	</foreach> 
+	
+	order by t.update_time limit 0,6
+  	
+  </select>
+  
+  <select id="homePage" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  	SELECT * FROM `grss_home_info` t WHERE t.is_show =1 AND t.type = #{homeType} order by t.update_time limit 0,6
+  </select>
+  
+  <select id="selectHomeInfoList" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	SELECT * FROM grss_home_info
+  	<where>
+  		<if test="type!=null and type!=''">
+  			type=#{type}
+  		</if>
+  		<if test="title!=null and title!=''">
+  			and title like "%"#{title}"%"
+  		</if>
+  		<if test="isShow !=null and isShow!=''">
+  			and is_show=#{isShow}
+  		</if>
+  	</where>
+  	order by update_time desc limit #{offset},#{pageSize};
+  </select>
+  <select id="selectHomeInfoListCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+  	SELECT count(1) FROM grss_home_info
+  	<where>
+  		<if test="type!=null and type!=''">
+  			type=#{type}
+  		</if>
+  		<if test="title!=null and title!=''">
+  			and title like "%"#{title}"%"
+  		</if>
+  		<if test="isShow !=null and isShow!=''">
+  			and is_show=#{isShow}
+  		</if>
+  	</where>
+  </select>
+</mapper>

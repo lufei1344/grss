@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssPromoDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssPromo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="price" property="price" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select *
+    from grss_promo
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.String" >
+    delete from grss_promo
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertByGrssPromo" parameterType="com.grss.jlsx.core.bean.GrssPromo" >
+    insert into grss_promo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="endDate != null" >
+        end_date,
+      </if>
+       <if test="price != null" >
+        price,
+      </if>
+       <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        #{endDate},
+      </if>
+       <if test="price != null" >
+        #{price},
+      </if>
+       <if test="state != null" >
+        #{state},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByGrssPromo" parameterType="com.grss.jlsx.core.bean.GrssPromo" >
+    update grss_promo
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        end_date=#{endDate},
+      </if>
+       <if test="price != null" >
+        price=#{price},
+      </if>
+       <if test="state != null" >
+        state=#{state},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select * from grss_promo
+    where user_id = #{userId} and type=1 
+    order by create_date DESC  
+    limit #{offset},#{pageSize} ;
+    
+  </select>
+  
+  <select id="selectByCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select * from grss_promo where `code`=#{code} and type=0 and end_date &lt; now();
+  </select>
+</mapper>

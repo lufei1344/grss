@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssRefundDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssRefund" >
+    <id column="refund_id" property="refundId" jdbcType="VARCHAR" />
+    <id column="refund_amount" property="refundAmount" jdbcType="VARCHAR" />
+    <id column="refund_order_no" property="refundOrderNo" jdbcType="VARCHAR" />
+    <id column="refund_reason" property="refundReason" jdbcType="VARCHAR" />
+    <id column="is_success" property="isSuccess" javaType="java.lang.Integer" />
+    <id column="refund_time" property="refundTime" javaType="java.util.Date" />
+  </resultMap>
+  <insert id="insertGrssRefund" parameterType="com.grss.jlsx.core.bean.GrssAdminClub" >
+    insert into grss_refund
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="refundId != null" >
+        refund_id,
+      </if>
+      <if test="refundAmount != null" >
+        refund_amount,
+      </if>
+      <if test="refundOrderNo != null" >
+        refund_order_no,
+      </if>
+      <if test="refundReason != null" >
+        refund_reason,
+      </if>
+      <if test="isSuccess != null" >
+        is_success,
+      </if>
+      <if test="refundTime != null" >
+        refund_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+     <if test="refundId != null" >
+        #{refundId},
+      </if>
+      <if test="refundAmount != null" >
+        #{refundAmount},
+      </if>
+      <if test="refundOrderNo != null" >
+        #{refundOrderNo},
+      </if>
+      <if test="refundReason != null" >
+        #{refundReason},
+       </if>
+      <if test="isSuccess != null" >
+        #{isSuccess},
+      </if>
+      <if test="refundTime != null" >
+        #{refundTime},
+      </if>
+    </trim>
+  </insert>
+</mapper>

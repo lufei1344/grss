@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssVideoOrderDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssVideoOrder" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="vido_id" property="vidoId" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="programa_name" property="programaName" jdbcType="VARCHAR" />
+    <result column="vido_cat_name1" property="vidoCatName1" jdbcType="VARCHAR" />
+    <result column="vido_cat_name2" property="vidoCatName2" jdbcType="VARCHAR" />
+    <result column="vido_cat_name3" property="vidoCatName3" jdbcType="VARCHAR" />
+    <result column="vido_cat_name4" property="vidoCatName4" jdbcType="VARCHAR" />
+    <result column="vido_cat_name5" property="vidoCatName5" jdbcType="VARCHAR" />
+    <result column="level" property="level" javaType="java.lang.Integer" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="order_sort" property="orderSort" javaType="java.lang.Integer" />
+  </resultMap>
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select *
+    from grss_video_order
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.String" >
+    delete from grss_video_order
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertByGrssVideoOrder" parameterType="com.grss.jlsx.core.bean.GrssVideoOrder" >
+    insert into grss_video_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="vidoId != null" >
+        vido_id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="programaName != null" >
+        programa_name,
+      </if>
+      <if test="vidoCatName1 != null" >
+        vido_cat_name1,
+      </if>
+      <if test="vidoCatName2 != null" >
+        vido_cat_name2,
+      </if>
+      <if test="vidoCatName3 != null" >
+        vido_cat_name3,
+      </if>
+      <if test="vidoCatName4 != null" >
+        vido_cat_name4,
+      </if>
+      <if test="vidoCatName5 != null" >
+        vido_cat_name5,
+      </if>
+      <if test="orderSort != null" >
+        order_sort,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="vidoId != null" >
+        #{vidoId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="programaName != null" >
+        #{programaName,jdbcType=VARCHAR},
+      </if>
+      <if test="vidoCatName1 != null" >
+        #{vidoCatName1,jdbcType=VARCHAR},
+      </if>
+      <if test="vidoCatName2 != null" >
+        #{vidoCatName2,jdbcType=VARCHAR},
+      </if>
+      <if test="vidoCatName3 != null" >
+        #{vidoCatName3,jdbcType=VARCHAR},
+      </if>
+      <if test="vidoCatName4 != null" >
+        #{vidoCatName4,jdbcType=VARCHAR},
+      </if>
+      <if test="vidoCatName5 != null" >
+        #{vidoCatName5,jdbcType=VARCHAR},
+      </if>
+      <if test="orderSort != null" >
+        #{orderSort},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByGrssVideoOrder" parameterType="com.grss.jlsx.core.bean.GrssVideoOrder" >
+    update grss_video_order
+    <set >
+      <if test="vidoId != null" >
+        vido_id = #{vidoId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="programaName != null" >
+        programa_name = #{programaName,jdbcType=VARCHAR},
+      </if>
+      <if test="vidoCatName1 != null" >
+        vido_cat_name1 = #{vidoCatName1,jdbcType=VARCHAR},
+      </if>
+      <if test="vidoCatName2 != null" >
+        vido_cat_name2 = #{vidoCatName2,jdbcType=VARCHAR},
+      </if>
+      <if test="vidoCatName3 != null" >
+        vido_cat_name3 = #{vidoCatName3,jdbcType=VARCHAR},
+      </if>
+      <if test="vidoCatName4 != null" >
+        vido_cat_name4 = #{vidoCatName4,jdbcType=VARCHAR},
+      </if>
+      <if test="vidoCatName5 != null" >
+        vido_cat_name5 = #{vidoCatName5,jdbcType=VARCHAR},
+      </if>
+      <if test="orderSort != null" >
+        order_sort=#{orderSort},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectVideoOrderByOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	SELECT
+	gvo.id,
+	gvo.programa_name,
+	gvo.order_id
+	FROM
+	`grss_video_order` gvo
+	WHERE
+	gvo.order_id = #{orderId}
+	GROUP BY
+	gvo.programa_name
+	ORDER BY
+	gvo.order_sort
+  </select>
+  <select id="selectVideoOrderByOrderIdAndProgramaName" parameterType="java.util.Map" resultMap="BaseResultMap">
+  <choose>
+  	<when test="version == null or version =='V1'">
+  	SELECT
+	gvo.vido_cat_name1,
+	gvo.order_id,
+	1 `level`
+	FROM
+	`grss_video_order` gvo
+	WHERE
+	gvo.order_id = #{orderId}
+	and gvo.programa_name = #{programaName}
+	GROUP BY
+	gvo.vido_cat_name1
+  	</when>
+  	<otherwise>
+  	SELECT
+	gvc.`name`,
+	gvo.order_id,
+	gvo.vido_cat_name1,
+	1 `level`
+	FROM
+	`grss_video_order` gvo,grss_video_category gvc
+	WHERE
+	gvo.vido_cat_name1 = gvc.id and
+	gvo.order_id = #{orderId}
+	and gvo.programa_name = #{programaName}
+	GROUP BY
+	gvo.vido_cat_name1
+  	</otherwise>
+  </choose>
+  </select>
+  <select id="selectVideoOrderByOrderIdAndCatName" parameterType="java.util.Map" resultMap="BaseResultMap">
+  <choose>
+  	<when test="version == null or version =='V1'">
+  	SELECT
+	gvo.vido_cat_name${level},
+	gvo.order_id,
+	gvo.vido_id,
+	${level} `level`
+	FROM
+	`grss_video_order` gvo
+	WHERE
+	gvo.order_id = #{orderId}
+	and gvo.vido_cat_name${conditionLevel} = #{catName}
+	GROUP BY
+	gvo.vido_cat_name${level}
+	</when>
+  	<otherwise>
+  	SELECT
+	gvo.vido_cat_name${level},
+	gvo.order_id,
+	gvo.vido_id,
+	gvc.`name`,
+	${level} `level`
+	FROM
+	`grss_video_order` gvo,grss_video_category gvc
+	WHERE
+	gvo.vido_cat_name${level} = gvc.id and 
+	gvo.order_id=#{orderId}
+	and gvo.vido_cat_name${conditionLevel} =#{catName}
+	GROUP BY
+	gvo.vido_cat_name${level}
+  	</otherwise>
+  </choose>
+  </select>
+  <select id="selectOrderCountByVideoId" resultType="java.lang.Integer" parameterType="java.lang.String">
+  	select count(1) from `grss_video_order` where vido_id=#{videoId};
+  </select>
+</mapper>

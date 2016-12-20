@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssUserSetupDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssUserSetup" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="reply" property="reply" jdbcType="INTEGER" />
+    <result column="praise" property="praise" jdbcType="INTEGER" />
+    <result column="private_chat" property="privateChat" jdbcType="INTEGER" />
+    <result column="new_fans" property="newFans" jdbcType="INTEGER" />
+    <result column="system_message" property="systemMessage" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectGrssUserSetupByUseId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from grss_user_setup where user_id = #{userId}
+  </select>
+  <insert id="insertGrssUserSetup" parameterType="com.grss.jlsx.core.bean.GrssUserSetup" >
+    insert into grss_user_setup
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="reply != null" >
+        reply,
+      </if>
+      <if test="praise != null" >
+        praise,
+      </if>
+      <if test="privateChat != null" >
+        private_chat,
+      </if>
+      <if test="newFans != null" >
+        new_fans,
+      </if>
+      <if test="systemMessage != null" >
+        system_message,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="reply != null" >
+        #{reply,jdbcType=INTEGER},
+      </if>
+      <if test="praise != null" >
+        #{praise,jdbcType=INTEGER},
+      </if>
+      <if test="privateChat != null" >
+        #{privateChat,jdbcType=INTEGER},
+      </if>
+      <if test="newFans != null" >
+        #{newFans,jdbcType=INTEGER},
+      </if>
+      <if test="systemMessage != null" >
+        #{systemMessage,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByGrssUserSetup" parameterType="com.grss.jlsx.core.bean.GrssUserSetup" >
+    update grss_user_setup
+    <set >
+      <if test="reply != null" >
+        reply = #{reply,jdbcType=INTEGER},
+      </if>
+      <if test="praise != null" >
+        praise = #{praise,jdbcType=INTEGER},
+      </if>
+      <if test="privateChat != null" >
+        private_chat = #{privateChat,jdbcType=INTEGER},
+      </if>
+      <if test="newFans != null" >
+        new_fans = #{newFans,jdbcType=INTEGER},
+      </if>
+      <if test="systemMessage != null" >
+        system_message = #{systemMessage,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

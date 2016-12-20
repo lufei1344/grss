@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssCoachLevelDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssCoachLevel" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="min" property="min" jdbcType="INTEGER" />
+    <result column="max" property="max" jdbcType="INTEGER" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="selectCoachLevelByOrderCount" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    select `level` from grss_coach_level where `min`&lt;=#{orderCount} and `max`&gt;=#{orderCount};
+  </select>
+</mapper>

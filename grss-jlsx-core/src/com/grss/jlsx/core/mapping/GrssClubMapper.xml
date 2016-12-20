@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.grss.jlsx.core.dao.GrssClubDao">
+	<resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssClub">
+		<id column="club_id" property="clubId" jdbcType="VARCHAR" />
+		<result column="club_name" property="clubName" jdbcType="VARCHAR" />
+		<result column="club_img" property="clubImg" jdbcType="VARCHAR" />
+		<result column="club_tel" property="clubTel" jdbcType="VARCHAR" />
+		<result column="club_desc" property="clubDesc" jdbcType="VARCHAR" />
+		<result column="club_address" property="clubAddress" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="longitude" property="longitude" jdbcType="VARCHAR" />
+		<result column="latitude" property="latitude" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="imgs" property="imgs" jdbcType="VARCHAR" />
+		<result column="is_collection" property="isCollection" jdbcType="INTEGER" />
+		<result column="club_ico" property="clubIco" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap type="com.grss.jlsx.core.bean.GrssClub" id="BaseResultExtendMap" extends="BaseResultMap">
+		<association property="grssCollect" javaType="com.grss.jlsx.core.bean.GrssCollect">
+	  		<id column="user_id" property="userId"/>
+	  		<result column="user_photo" property="userPhoto"/>
+	  		<result column="nike_name" property="nikeName"/>
+	  	</association>
+	</resultMap>
+	
+	<select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT 
+			gc.*
+		FROM grss_club gc
+		WHERE 
+			gc.club_id = #{clubId}
+	</select>
+	
+	<select id="selectByIds" parameterType="java.util.Map" resultMap="BaseResultMap">
+		SELECT
+			gc.* <choose><when test="userId!=null">,CASE
+		WHEN h.user_id IS NULL THEN
+			0
+		ELSE
+			1
+		END AS is_collection</when><otherwise>,0 AS is_collection</otherwise></choose>
+		FROM
+			grss_club gc
+		<if test="userId!=null">
+		LEFT JOIN (
+			SELECT
+				t.club_id,
+				t.user_id
+			FROM
+				grss_collect t
+			WHERE
+				t.user_id=#{userId}
+		) h ON gc.club_id = h.club_id </if> where gc.club_id=#{clubId}
+	</select>
+	
+	
+	<select id="findGrssClub" resultMap="BaseResultMap" parameterType="com.grss.jlsx.core.bean.GrssClub">
+		SELECT 
+			*
+		FROM grss_club model 
+		<where>
+			<if test="clubName != null  and clubName != '' ">
+				model.club_name = #{clubName} 
+			</if>
+			<if test="clubImg != null  and clubImg != '' ">
+				model.club_img = #{clubImg} 
+			</if>
+			<if test="clubTel != null  and clubTel != '' ">
+				model.club_tel = #{clubTel} 
+			</if>
+			<if test="clubDesc != null  and clubDesc != '' ">
+				model.club_desc = #{clubDesc} 
+			</if>
+			<if test="clubAddress != null  and clubAddress != '' ">
+				model.club_address = #{clubAddress} 
+			</if>
+			<if test="province != null  and province != '' ">
+				model.province = #{province} 
+			</if>
+			<if test="city != null  and city != '' ">
+				model.city = #{city} 
+			</if>
+			<if test="area != null  and area != '' ">
+				model.area = #{area} 
+			</if>
+			<if test="longitude != null  and longitude != '' ">
+				model.longitude = #{longitude} 
+			</if>
+			<if test="latitude != null  and latitude != '' ">
+				model.latitude = #{latitude} 
+			</if>
+			<if test="createDate != null  and createDate != '' ">
+				model.create_date = #{createDate} 
+			</if>
+			<if test="updateDate != null  and updateDate != '' ">
+				model.update_date = #{updateDate} 
+			</if>
+		</where>
+	</select>
+	
+
+	<!-- 按Id删除 -->
+	<delete id="deleteById" parameterType="java.lang.String">
+		DELETE FROM grss_club WHERE
+		club_id = #{clubId} 
+	</delete>
+	 <!-- 插入 -->
+	<insert id="insertByGrssClub" parameterType="com.grss.jlsx.core.bean.GrssClub">
+		INSERT INTO grss_club 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="clubId != null" >
+	        club_id,
+	      </if>
+	      <if test="clubName != null" >
+	        club_name,
+	      </if>
+	      <if test="clubImg != null" >
+	        club_img,
+	      </if>
+	      <if test="clubTel != null" >
+	        club_tel,
+	      </if>
+	      <if test="clubDesc != null" >
+	        club_desc,
+	      </if>
+	      <if test="clubAddress != null" >
+	        club_address,
+	      </if>
+	      <if test="province != null" >
+	        province,
+	      </if>
+	      <if test="city != null" >
+	        city,
+	      </if>
+	      <if test="area != null" >
+	        area,
+	      </if>
+	      <if test="longitude != null" >
+	        longitude,
+	      </if>
+	      <if test="latitude != null" >
+	        latitude,
+	      </if>
+	      <if test="createDate != null" >
+	        create_date,
+	      </if>
+	      <if test="updateDate != null" >
+	        update_date,
+	      </if>
+	      <if test="type != null" >
+	        type,
+	      </if>
+	      <if test="imgs != null" >
+	        imgs,
+	      </if>
+	      <if test="clubIco != null" >
+	        club_ico,
+	      </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="clubId != null" >
+	        #{clubId},
+	      </if>
+			<if test="clubName != null" >
+	        #{clubName},
+	      </if>
+			<if test="clubImg != null" >
+	        #{clubImg},
+	      </if>
+			<if test="clubTel != null" >
+	        #{clubTel},
+	      </if>
+			<if test="clubDesc != null" >
+	        #{clubDesc},
+	      </if>
+			<if test="clubAddress != null" >
+	        #{clubAddress},
+	      </if>
+			<if test="province != null" >
+	        #{province},
+	      </if>
+			<if test="city != null" >
+	        #{city},
+	      </if>
+			<if test="area != null" >
+	        #{area},
+	      </if>
+			<if test="longitude != null" >
+	        #{longitude},
+	      </if>
+			<if test="latitude != null" >
+	        #{latitude},
+	      </if>
+			<if test="createDate != null" >
+	        #{createDate},
+	      </if>
+			<if test="updateDate != null" >
+	        #{updateDate},
+	      </if>
+	      <if test="type != null" >
+	        #{type},
+	      </if>
+	      <if test="imgs != null" >
+	        #{imgs},
+	      </if>
+	      <if test="clubIco != null" >
+	        #{clubIco},
+	      </if>
+		</trim>	
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="updateByGrssClub" parameterType="com.grss.jlsx.core.bean.GrssClub">
+		UPDATE grss_club 
+			<set>
+				<if test="clubName!=null">
+				club_name = #{clubName},
+				</if>
+				<if test="clubImg!=null">
+				club_img = #{clubImg},
+				</if>
+				<if test="clubTel!=null">
+				club_tel = #{clubTel},
+				</if>
+				<if test="clubDesc!=null">
+				club_desc = #{clubDesc},
+				</if>
+				<if test="clubAddress!=null">
+				club_address = #{clubAddress},
+				</if>
+				<if test="province!=null">
+				province = #{province},
+				</if>
+				<if test="city!=null">
+				city = #{city},
+				</if>
+				<if test="area!=null">
+				area = #{area},
+				</if>
+				<if test="longitude!=null">
+				longitude = #{longitude},
+				</if>
+				<if test="latitude!=null">
+				latitude = #{latitude},
+				</if>
+				<if test="createDate!=null">
+				create_date = #{createDate},
+				</if>
+				<if test="updateDate!=null">
+				update_date = #{updateDate},
+				</if>
+				<if test="type!=null">
+				type = #{type},
+				</if>
+				<if test="imgs!=null">
+				imgs = #{imgs},
+				</if>
+				<if test="clubIco != null" >
+		        	club_ico=#{clubIco},
+		      	</if>
+			</set>
+		WHERE 
+			club_id = #{clubId}
+	</update>
+	
+	
+	<select id="countAllNum" resultType="java.lang.Integer" parameterType="java.util.Map">
+		SELECT count(club_id) FROM grss_club model where 1=1 
+		<if test="grssClub.clubName != null  and  grssClub.clubName != '' ">
+			AND model.club_name like "%"#{grssClub.clubName}"%" 
+		</if>
+		<if test="grssClub.type != null  and  grssClub.type != '' ">
+			AND model.type = #{grssClub.type} 
+		</if>
+		<if test="grssClub.clubImg != null  and  grssClub.clubImg != '' ">
+			AND model.club_img = #{grssClub.clubImg} 
+		</if>
+		<if test="grssClub.clubTel != null  and  grssClub.clubTel != '' ">
+			AND model.club_tel = #{grssClub.clubTel} 
+		</if>
+		<if test="grssClub.clubDesc != null  and  grssClub.clubDesc != '' ">
+			AND model.club_desc like "%"#{grssClub.clubDesc}"%" 
+		</if>
+		<if test="grssClub.clubAddress != null  and  grssClub.clubAddress != '' ">
+			AND model.club_address like "%"#{grssClub.clubAddress}"%" 
+		</if>
+		<if test="grssClub.province != null  and  grssClub.province != '' ">
+			AND model.province = #{grssClub.province}
+		</if>
+		<if test="grssClub.city != null  and  grssClub.city != '' ">
+			AND model.city = #{grssClub.city} 
+		</if>
+		<if test="grssClub.area != null  and  grssClub.area != '' ">
+			AND model.area = #{grssClub.area}
+		</if>
+		<if test="grssClub.longitude != null  and  grssClub.longitude != '' ">
+			AND model.longitude = #{grssClub.longitude} 
+		</if>
+		<if test="grssClub.latitude != null  and  grssClub.latitude != '' ">
+			AND model.latitude = #{grssClub.latitude} 
+		</if>
+		<if test="grssClub.createDate != null  and  grssClub.createDate != '' ">
+			AND model.create_date = #{grssClub.createDate} 
+		</if>
+		<if test="grssClub.updateDate != null  and  grssClub.updateDate != '' ">
+			AND model.update_date = #{grssClub.updateDate} 
+		</if>
+	</select>
+	
+	<select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map">
+		SELECT 
+			model.*<choose><when test="userId!=null">,CASE
+				WHEN h.user_id IS NULL THEN
+					0
+				ELSE
+					1
+				END AS is_collection</when><otherwise>,0 AS is_collection</otherwise></choose>
+			FROM grss_club model <if test="userId!=null"> LEFT JOIN (
+				SELECT
+					t.club_id,
+					t.user_id
+				FROM
+					grss_collect t
+				WHERE
+					t.user_id = #{userId}
+			) h ON model.club_id = h.club_id </if>
+		<where>
+			<if test="grssClub.clubName != null  and  grssClub.clubName != '' ">
+				model.club_name like "%"#{grssClub.clubName}"%" 
+			</if>
+			<if test="grssClub.clubImg != null  and  grssClub.clubImg != '' ">
+				AND model.club_img = #{grssClub.clubImg} 
+			</if>
+			<if test="grssClub.type != null  and  grssClub.type != '' ">
+				AND model.type = #{grssClub.type} 
+			</if>
+			<if test="grssClub.clubTel != null  and  grssClub.clubTel != '' ">
+				AND model.club_tel like "%"#{grssClub.clubTel}"%" 
+			</if>
+			<if test="grssClub.clubDesc != null  and  grssClub.clubDesc != '' ">
+				AND model.club_desc like "%"#{grssClub.clubDesc}"%" 
+			</if>
+			<if test="grssClub.clubAddress != null  and  grssClub.clubAddress != '' ">
+				AND model.club_address like "%"#{grssClub.clubAddress}"%" 
+			</if>
+			<if test="grssClub.province != null  and  grssClub.province != '' ">
+				AND model.province = #{grssClub.province} 
+			</if>
+			<if test="grssClub.city != null  and  grssClub.city != '' ">
+				AND model.city = #{grssClub.city}
+			</if>
+			<if test="grssClub.area != null  and  grssClub.area != '' ">
+				AND model.area = #{grssClub.area} 
+			</if>
+			<if test="grssClub.longitude != null  and  grssClub.longitude != '' ">
+				AND model.longitude = #{grssClub.longitude}
+			</if>
+			<if test="grssClub.latitude != null  and  grssClub.latitude != '' ">
+				AND model.latitude = #{grssClub.latitude} 
+			</if>
+			<if test="grssClub.createDate != null  and  grssClub.createDate != '' ">
+				AND model.create_date = #{grssClub.createDate} 
+			</if>
+			<if test="grssClub.updateDate != null  and  grssClub.updateDate != '' ">
+				AND model.update_date = #{grssClub.updateDate} 
+			</if>
+		</where>
+		limit #{offset},#{pageSize}
+		
+	</select>
+	
+	<select id="selectCollectClubs"  resultMap="BaseResultMap" parameterType="java.util.Map">
+		SELECT 
+			model.*,1 AS is_collection
+			FROM grss_club model  RIGHT JOIN (
+				SELECT
+					t.club_id,
+					t.user_id
+				FROM
+					grss_collect t
+				WHERE
+					t.user_id = #{userId}
+			) h ON model.club_id = h.club_id
+		limit #{offset},#{pageSize}
+	</select>
+	<select id="selectGrssClubAllList" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select * from grss_club gc
+		<choose>
+			<when test="adminUserId != null">
+				,grss_admin_user_club gauc 
+				 where gc.club_id = gauc.club_id 
+				 and gauc.admin_user_id = #{adminUserId} 
+				 <if test="clubName != null">
+						and gc.club_name like "%"#{clubName}"%"
+					</if>
+					<if test="startDate != null">
+						and DATE_FORMAT(gc.create_date,'%Y-%m-%d') &gt;= #{startDate}
+					</if>
+					<if test="endDate != null">
+						and DATE_FORMAT(gc.create_date,'%Y-%m-%d') &lt;= #{endDate}
+					</if>
+			</when>
+			<otherwise>
+				<where>
+					<if test="clubName != null">
+						gc.club_name like "%"#{clubName}"%"
+					</if>
+					<if test="startDate != null">
+						and DATE_FORMAT(gc.create_date,'%Y-%m-%d') &gt;= #{startDate}
+					</if>
+					<if test="endDate != null">
+						and DATE_FORMAT(gc.create_date,'%Y-%m-%d') &lt;= #{endDate}
+					</if>
+				</where> 
+			</otherwise>
+		</choose>
+		
+		limit #{offset},#{pageSize}
+	</select>
+	<select id="selectGrssClubAllCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(0) from grss_club gc
+			<choose>
+			<when test="adminUserId != null">
+				,grss_admin_user_club gauc 
+				 where gc.club_id = gauc.club_id 
+				 and gauc.admin_user_id = #{adminUserId} 
+				 <if test="clubName != null">
+						and gc.club_name like "%"#{clubName}"%"
+					</if>
+					<if test="startDate != null">
+						and DATE_FORMAT(gc.create_date,'%Y-%m-%d') &gt;= #{startDate}
+					</if>
+					<if test="endDate != null">
+						and DATE_FORMAT(gc.create_date,'%Y-%m-%d') &lt;= #{endDate}
+					</if>
+			</when>
+			<otherwise>
+				<where>
+					<if test="clubName != null">
+						gc.club_name like "%"#{clubName}"%"
+					</if>
+					<if test="startDate != null">
+						and DATE_FORMAT(gc.create_date,'%Y-%m-%d') &gt;= #{startDate}
+					</if>
+					<if test="endDate != null">
+						and DATE_FORMAT(gc.create_date,'%Y-%m-%d') &lt;= #{endDate}
+					</if>
+				</where> 
+			</otherwise>
+		</choose>
+	</select>
+	<!-- 自定义SQL -->
+	
+	
+</mapper>
+

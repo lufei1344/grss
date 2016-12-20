@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssCollectDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssCollect" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="club_id" property="clubId" jdbcType="VARCHAR" />
+    <result column="jion_date" property="jionDate" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, club_id, jion_date
+  </sql>
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from grss_collect
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.String" >
+    delete from grss_collect
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertByGrssCollect" parameterType="com.grss.jlsx.core.bean.GrssCollect" >
+    insert into grss_collect
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="clubId != null" >
+        club_id,
+      </if>
+      <if test="jionDate != null" >
+        jion_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="clubId != null" >
+        #{clubId,jdbcType=VARCHAR},
+      </if>
+      <if test="jionDate != null" >
+        #{jionDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByGrssCollect" parameterType="com.grss.jlsx.core.bean.GrssCollect" >
+    update grss_collect
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="clubId != null" >
+        club_id = #{clubId,jdbcType=VARCHAR},
+      </if>
+      <if test="jionDate != null" >
+        jion_date = #{jionDate,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="findGrssCollect" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select * from grss_collect where user_id = #{userId} and club_id = #{clubId}
+  </select>
+  
+  <delete id="deleteByIds" parameterType="java.util.Map">
+  	 delete from grss_collect
+    where  user_id = #{userId} and club_id = #{clubId}
+  </delete>
+</mapper>

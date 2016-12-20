@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssVideoCategoryDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssVideoCategory" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="prarent_id" property="prarentId" jdbcType="VARCHAR" />
+    <result column="cate_code" property="cateCode" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="programa_id" property="programaId" javaType="java.lang.Integer" />
+  </resultMap>
+  <resultMap type="com.grss.jlsx.core.bean.GrssVideoCategory" id="BaseResultMapExtends" extends="BaseResultMap">
+  	<result column="programa_name" property="programaName" javaType="java.lang.String"/>
+  </resultMap>
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select *
+    from grss_video_category
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.String" >
+    delete from grss_video_category
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertByGrssVideoCategory" parameterType="com.grss.jlsx.core.bean.GrssVideoCategory" >
+    insert into grss_video_category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="prarentId != null" >
+        prarent_id,
+      </if>
+      <if test="cateCode != null" >
+        cate_code,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="programaId != null" >
+        programa_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="prarentId != null" >
+        #{prarentId,jdbcType=VARCHAR},
+      </if>
+      <if test="cateCode != null" >
+        #{cateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="programaId != null" >
+        #{programaId},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByGrssVideoCategory" parameterType="com.grss.jlsx.core.bean.GrssVideoCategory" >
+    update grss_video_category
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="prarentId != null" >
+        prarent_id = #{prarentId,jdbcType=VARCHAR},
+      </if>
+      <if test="cateCode != null" >
+        cate_code = #{cateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="programaId != null" >
+        programa_id = #{programaId},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectParentCategoryList" resultMap="BaseResultMapExtends" parameterType="java.lang.Integer">
+  	select gvc.*,gvcp.name as programa_name
+  	from grss_video_category gvc left join grss_video_cat_programa gvcp on gvc.programa_id=gvcp.id
+  	where gvc.prarent_id = 0 and gvc.programa_id = #{programaId}
+  </select>
+  <select id="selectCategoryByParentIdList" parameterType="java.lang.String" resultMap="BaseResultMap"> 
+  	select * from grss_video_category gvc where gvc.prarent_id = #{parentId} order by gvc.cate_code
+  </select>
+  
+  <select id="selectCatsList" parameterType="java.util.Map" resultMap="BaseResultMapExtends">
+  	select gvc.*,gvcp.name as programa_name
+  	from grss_video_category gvc left join grss_video_cat_programa gvcp on gvc.programa_id=gvcp.id
+  	<where>
+  		<if test="catName!=null and catName!=''">
+  			gvc.`name` like "%"#{catName}"%"
+  		</if>
+  	</where>
+  	order by cate_code limit #{offset},#{pageSize};
+  </select>
+  <select id="selectCatsListCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+  	select count(1) from grss_video_category gvc
+  	<where>
+  		<if test="catName!=null and catName!=''">
+  			gvc.`name` like "%"#{catName}"%"
+  		</if>
+  	</where>
+  </select>
+  <select id="selectParentCats" resultMap="BaseResultMap">
+  	select * from grss_video_category where CHAR_LENGTH(cate_code)&gt;3 and  CHAR_LENGTH(cate_code)&lt;8 order by cate_code ;
+  </select>
+  <select id="selectMaxCateCodeByPid" resultType="java.lang.String" parameterType="java.lang.String">
+  	select MAX(cate_code) from grss_video_category where prarent_id=#{parentId};
+  </select>
+  <select id="selectAllVideoCats" resultMap="BaseResultMap">
+  	select gvc.*
+  	from grss_video_category gvc order by gvc.cate_code
+  </select>
+</mapper>

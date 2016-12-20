@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssAppDeployVersionDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssAppDeployVersion" >
+    <id column="deploy_id" property="deployId" javaType="java.lang.Integer" />
+    <id column="deploy_type" property="deployType" jdbcType="VARCHAR" />
+    <id column="deploy_version" property="deployVersion" javaType="java.lang.Integer" />
+    <id column="deploy_comment" property="deployComment" jdbcType="VARCHAR" />
+    <id column="deploy_url" property="deployUrl" jdbcType="VARCHAR" />
+    <id column="app_type" property="appType" javaType="java.lang.Integer" />
+    <id column="depoly_time" property="depolyTime" javaType="java.util.Date" />
+  </resultMap>
+  
+  <insert id="insertByGrssAppDeployVersion" parameterType="com.grss.jlsx.core.bean.GrssAppDeployVersion" >
+    insert into grss_app_deploy_version
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="deployType != null" >
+        deploy_type,
+      </if>
+      <if test="deployVersion != null" >
+        deploy_version,
+      </if>
+      <if test="deployComment != null" >
+        deploy_comment,
+      </if>
+      <if test="deployUrl != null" >
+        deploy_url,
+      </if>
+      <if test="appType != null" >
+        app_type,
+      </if>
+      <if test="depolyTime != null" >
+        depoly_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="deployType != null" >
+        #{deploy_type},
+      </if>
+      <if test="deployVersion != null" >
+        #{deploy_version},
+      </if>
+      <if test="deployComment != null" >
+        #{deploy_comment},
+      </if>
+      <if test="deployUrl != null" >
+        #{deploy_url},
+      </if>
+      <if test="appType != null" >
+        #{app_type},
+      </if>
+      <if test="depolyTime != null" >
+        #{depoly_time},
+      </if>
+    </trim>
+  </insert>
+  <select id="selectGrssAppDeployVersionByAppType" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select * from grss_app_deploy_version gadv where gadv.app_type = #{appType} order by gadv.deploy_version desc limit 0,1
+  </select>
+</mapper>

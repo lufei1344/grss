@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssPostsDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssPosts" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="idea" property="idea" jdbcType="VARCHAR" />
+    <result column="community_id" property="communityId" jdbcType="VARCHAR" />
+    <result column="images_url" property="imagesUrl" jdbcType="VARCHAR" />
+    <result column="vidos_url" property="vidosUrl" jdbcType="VARCHAR" />
+    <result column="send_date" property="sendDate" javaType="java.util.Date" />
+    <result column="remark_total" property="remarkTotal" javaType="java.lang.Integer"/>
+    <result column="admire_total" property="admireTotal" javaType="java.lang.Integer"/>
+     <result column="title" property="title" javaType="java.lang.String"/>
+    <result column="user_id" property="userId" javaType="java.lang.String"/>
+    <result column="is_master" property="isMaster" javaType="java.lang.Integer"/>
+    <result column="source_user_id" property="sourceUserId" javaType="java.lang.String"/>
+    
+  </resultMap>
+ 
+ <!--  <update id="updateByGrssPosts" parameterType="com.grss.jlsx.core.bean.GrssPosts" >
+    update grss_posts
+    <set >
+      <if test="idea != null" >
+        idea = #{idea,jdbcType=VARCHAR},
+      </if>
+      <if test="communityId != null" >
+        community_id = #{communityId,jdbcType=VARCHAR},
+      </if>
+      <if test="imagesUrl != null" >
+        images_url = #{imagesUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="vidosUrl != null" >
+        vidos_url = #{vidosUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sendDate != null" >
+        send_date = #{sendDate},
+      </if>
+      <if test="title != null" >
+        title = #{title},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update> -->
+  <resultMap type="com.grss.jlsx.core.bean.GrssPosts" id="BaseResultExtendMap" extends="BaseResultMap">
+  	<id column="id" property="id"/>
+  	<association property="grssUser" javaType="com.grss.jlsx.core.bean.GrssUser">
+  		<id column="user_id" property="userId"/>
+  		<result column="user_photo" property="userPhoto"/>
+  		<result column="nike_name" property="nikeName"/>
+  		<result column="user_type" property="userType"/>
+  	</association>
+  </resultMap>
+  
+   <select id="selectById" resultMap="BaseResultExtendMap" parameterType="java.lang.String" >
+   select *
+    from grss_posts
+    where id = #{id}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.String" >
+    delete from grss_posts
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertByGrssPosts" parameterType="com.grss.jlsx.core.bean.GrssPosts" >
+    insert into grss_posts
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="idea != null" >
+        idea,
+      </if>
+      <if test="communityId != null" >
+        community_id,
+      </if>
+      <if test="imagesUrl != null" >
+        images_url,
+      </if>
+      <if test="vidosUrl != null" >
+        vidos_url,
+      </if>
+      <if test="sendDate != null" >
+      	send_date,
+      </if>
+      <if test="title != null" >
+      	title,
+      </if>
+      
+      <if test="userId != null" >
+      	user_id,
+      </if>
+      <if test="isMaster != null" >
+      	is_master,
+      </if>
+      <if test="sourceUserId != null" >
+      	source_user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="idea != null" >
+        #{idea},
+      </if>
+      <if test="communityId != null" >
+        #{communityId},
+      </if>
+      <if test="imagesUrl != null" >
+        #{imagesUrl},
+      </if>
+      <if test="vidosUrl != null" >
+        #{vidosUrl},
+      </if>
+      <if test="sendDate != null" >
+        #{sendDate},
+      </if>
+      <if test="title != null" >
+        #{title},
+      </if>
+      <if test="userId != null" >
+      	#{userId},
+      </if>
+      <if test="isMaster != null" >
+      	#{isMaster},
+      </if>
+      <if test="sourceUserId != null" >
+      	#{sourceUserId},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <select id="selectGrssPostsByCommunityId" parameterType="java.util.Map" resultMap="BaseResultExtendMap">
+ 	SELECT
+	gp.*, gu.*
+FROM
+	grss_posts gp,
+	grss_user gu
+WHERE
+	gp.`user_id` = gu.`user_id`
+AND gp.`community_id` = #{communityId}
+ORDER BY
+	gp.send_date DESC
+LIMIT  #{offset},#{pageSize}
+  </select>
+  
+  <select id="selectGrssPostsAll" resultMap="BaseResultExtendMap" parameterType="java.util.Map">
+  	SELECT
+	gp.*, gu.*
+FROM
+	grss_posts gp,
+	grss_user gu
+WHERE gp.user_id = gu.user_id
+ORDER BY
+	gp.send_date DESC
+LIMIT #{offset},#{pageSize}
+  </select>
+  <select id="selectGrssPostsByFollowMyUserId" resultMap="BaseResultExtendMap" parameterType="java.util.Map">
+  	SELECT
+	gp.*, gu.*
+FROM
+	grss_posts gp,
+	grss_follow gf,
+	grss_user gu
+WHERE
+gp.user_id = gf.be_noticed_id
+AND gp.user_id = gu.user_id
+AND gf.fans_id = #{userId}
+ORDER BY
+	gp.send_date DESC
+LIMIT #{offset},#{pageSize}
+  </select>
+  
+  <select id="selectGrssPostsAllOrderByTotal" resultMap="BaseResultExtendMap" parameterType="java.util.Map">
+	SELECT
+	gp.*, gu.user_id,
+	gu.nike_name,
+	gu.user_photo,
+	gu.user_type,
+	IFNULL(t.admire_total, 0) admire_total,
+	IFNULL(t1.remark_total, 0) remark_total,
+	IFNULL(t.admire_total, 0) + IFNULL(t1.remark_total, 0) total
+FROM
+	`grss_user` gu,
+	`grss_posts` gp
+LEFT JOIN (
+	SELECT
+		gp.id posts_id,
+		COUNT(0) admire_total
+	FROM
+		`grss_posts` gp,
+		`grss_posts_admire` gpa
+	WHERE
+		gp.id = gpa.posts_id
+	GROUP BY
+		posts_id
+) t ON gp.id = t.posts_id
+LEFT JOIN (
+	SELECT
+		gp.id posts_id,
+		COUNT(0) remark_total
+	FROM
+		`grss_posts` gp,
+		`grss_posts_remark` gpr
+	WHERE
+		gp.id = gpr.posts_id
+	GROUP BY
+		posts_id
+) t1 ON gp.id = t1.posts_id
+WHERE
+	gp.user_id = gu.user_id
+ORDER BY
+	total DESC
+	LIMIT #{offset},#{pageSize}
+  </select>
+  
+  <select id="selectGrssPostsByUserId" parameterType="java.util.Map" resultMap="BaseResultExtendMap">
+  SELECT
+	gp.*, gu.user_id,
+	gu.nike_name,
+	gu.user_photo,
+	gu.user_type,
+IF (t1.total, t1.total, 0) remark_total,
+
+IF (t2.total, t2.total, 0) admire_total
+FROM
+	`grss_user` gu,
+	`grss_posts` gp
+LEFT JOIN (
+	SELECT
+		gp.id posts_id,
+		COUNT(0) total
+	FROM
+		`grss_posts` gp,
+		`grss_posts_remark` gpr
+	WHERE
+		gp.id = gpr.posts_id
+	AND gp.user_id = #{userId}
+	GROUP BY
+		posts_id
+) t1 ON gp.id = t1.posts_id
+LEFT JOIN (
+	SELECT
+		gp.id posts_id,
+		COUNT(0) total
+	FROM
+		`grss_posts` gp,
+		`grss_posts_admire` gpa
+	WHERE
+		gp.id = gpa.posts_id
+	AND gp.user_id = #{userId}
+	GROUP BY
+		posts_id
+) t2 ON gp.id = t2.posts_id
+WHERE
+	gp.`user_id` = gu.`user_id`
+AND gp.`user_id` = #{userId}
+order BY
+	gp.send_date DESC
+  LIMIT #{offset},#{pageSize}
+  </select>
+  <select id="selectGrssPostsByPostsId" resultMap="BaseResultExtendMap" parameterType="java.lang.String">
+  	 SELECT 
+   gp.*,
+  gu.*,
+  IFNULL(h1.total, 0) remark_total,
+  IFNULL(h2.total, 0) admire_total
+FROM
+  `grss_user` gu,
+  `grss_posts` gp 
+  LEFT JOIN 
+    (SELECT 
+      gpr.`posts_id`,
+      COUNT(0) total 
+    FROM
+      `grss_posts_remark` gpr 
+    WHERE gpr.`posts_id` = #{postsId} 
+    GROUP BY gpr.`posts_id`) h1 
+    ON h1.posts_id = gp.`id` 
+  LEFT JOIN 
+    (SELECT 
+      gpa.`posts_id`,
+      COUNT(0) total 
+    FROM
+      `grss_posts_admire` gpa 
+    WHERE gpa.`posts_id` = #{postsId} 
+    GROUP BY gpa.`posts_id`) h2 
+    ON h2.posts_id = gp.`id` 
+    WHERE gu.`user_id` = gp.`user_id`
+    AND gp.`id` = #{postsId}
+  </select>
+  <select id="selectGrssPostsByUserIds" resultMap="BaseResultExtendMap" parameterType="java.util.Map">
+  SELECT
+	gp.*, gu.user_id,
+	gu.nike_name,
+	gu.user_photo,
+	gu.user_type,
+IF (t1.total, t1.total, 0) remark_total,
+
+IF (t2.total, t2.total, 0) admire_total
+FROM
+	`grss_user` gu,
+	`grss_posts` gp
+LEFT JOIN (
+	SELECT
+		gp.id posts_id,
+		COUNT(0) total
+	FROM
+		`grss_posts` gp,
+		`grss_posts_remark` gpr
+	WHERE
+		gp.id = gpr.posts_id
+	GROUP BY
+		posts_id
+) t1 ON gp.id = t1.posts_id
+LEFT JOIN (
+	SELECT
+		gp.id posts_id,
+		COUNT(0) total
+	FROM
+		`grss_posts` gp,
+		`grss_posts_admire` gpa
+	WHERE
+		gp.id = gpa.posts_id
+	GROUP BY
+		posts_id
+) t2 ON gp.id = t2.posts_id
+WHERE
+	gp.`user_id` = gu.`user_id`
+AND gp.`user_id` in
+<foreach item="userId" index="index" collection="userIds" open="(" separator="," close=")">  
+	 	#{userId}
+</foreach> 
+order BY
+	gp.send_date DESC
+LIMIT #{offset},#{pageSize}
+  </select>
+  <select id="selectGrssPostsByAdmireUserId" parameterType="java.util.Map" resultMap="BaseResultExtendMap">
+  	SELECT
+	gp.*, gu.user_id,
+	gu.nike_name,
+	gu.user_photo,
+	gu.user_type,
+IF (t1.total, t1.total, 0) remark_total,
+
+IF (t2.total, t2.total, 0) admire_total
+FROM
+	(
+		SELECT DISTINCT
+			gpr.posts_id
+		FROM
+			`grss_posts_remark` gpr
+		WHERE
+			gpr.remark_user_id = #{userId}
+		GROUP BY
+			gpr.posts_id
+	) h,
+	`grss_user` gu,
+	`grss_posts` gp
+LEFT JOIN (
+	SELECT
+		gp.id posts_id,
+		COUNT(0) total
+	FROM
+		`grss_posts` gp,
+		`grss_posts_remark` gpr
+	WHERE
+		gp.id = gpr.posts_id
+	GROUP BY
+		posts_id
+) t1 ON gp.id = t1.posts_id
+LEFT JOIN (
+	SELECT
+		gp.id posts_id,
+		COUNT(0) total
+	FROM
+		`grss_posts` gp,
+		`grss_posts_admire` gpa
+	WHERE
+		gp.id = gpa.posts_id
+	GROUP BY
+		posts_id
+) t2 ON gp.id = t2.posts_id
+WHERE
+	gp.`user_id` = gu.`user_id`
+AND h.posts_id = gp.id
+ORDER BY
+	gp.send_date DESC
+	LIMIT #{offset},#{pageSize}
+  </select>
+  
+  <select id="findGrssPost" parameterType="java.util.Map" resultMap="BaseResultExtendMap">
+  	SELECT
+	gp.*, gu.*
+	FROM
+		grss_posts gp,
+		grss_user gu
+	WHERE
+		gp.`user_id` = gu.`user_id`
+		<if test="idea != null">
+			and gp.idea like "%"#{idea}"%"
+		</if>
+		<if test="nickName != null">
+			and gu.nick_name like "%"#{nickName}"%"
+		</if>
+		<if test="startDate != null">
+			and DATE_FORMAT(gp.send_date,'%Y-%m-%d') &gt;= #{startDate}
+		</if>
+		<if test="endDate != null">
+			and DATE_FORMAT(gp.send_date,'%Y-%m-%d') &lt;= #{endDate}
+		</if>
+	ORDER BY
+		gp.send_date DESC
+	LIMIT  #{offset},#{pageSize}
+  </select>
+  
+  <select id="findGrssPostCount" parameterType="java.util.Map"  resultType="java.lang.Integer">
+  	SELECT
+	count(gp.id)
+	FROM
+		grss_posts gp,
+		grss_user gu
+	WHERE
+		gp.`user_id` = gu.`user_id`
+		<if test="idea != null">
+			and gp.idea like "%"#{idea}"%"
+		</if>
+		<if test="nickName != null">
+			and gu.nick_name like "%"#{nickName}"%"
+		</if>
+		<if test="startDate != null">
+			and DATE_FORMAT(gp.send_date,'%Y-%m-%d') &gt;= #{startDate}
+		</if>
+		<if test="endDate != null">
+			and DATE_FORMAT(gp.send_date,'%Y-%m-%d') &lt;= #{endDate}
+		</if>
+  </select>
+</mapper>

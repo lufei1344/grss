@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.grss.jlsx.core.dao.GrssUserExDao" >
+  <resultMap id="BaseResultMap" type="com.grss.jlsx.core.bean.GrssUserEx" >
+    <id column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="height" property="height" jdbcType="VARCHAR" />
+    <result column="weight" property="weight" jdbcType="VARCHAR" />
+    <result column="habitus_exp" property="habitusExp" jdbcType="VARCHAR" />
+    <result column="waist" property="waist" jdbcType="VARCHAR" />
+    <result column="hipline" property="hipline" jdbcType="VARCHAR" />
+    <result column="hipline_ratio" property="hiplineRatio" jdbcType="VARCHAR" />
+    <result column="body_fat" property="bodyFat" jdbcType="VARCHAR" />
+    <result column="metabolism_ratio" property="metabolismRatio" jdbcType="VARCHAR" />
+    <result column="still_heartbeat" property="stillHeartbeat" jdbcType="VARCHAR" />
+    <result column="blood_pressure" property="bloodPressure" jdbcType="VARCHAR" />
+    <result column="front_image_url" property="frontImageUrl" jdbcType="VARCHAR" />
+    <result column="side_image_url" property="sideImageUrl" jdbcType="VARCHAR" />
+    <result column="rear_image_url" property="rearImageUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * 
+    from grss_user_ex
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.String" >
+    delete from grss_user_ex
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertGrssUserEx" parameterType="com.grss.jlsx.core.bean.GrssUserEx" >
+    insert into grss_user_ex
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="age != null" >
+        age,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="height != null" >
+        height,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="habitusExp != null" >
+        habitus_exp,
+      </if>
+      <if test="waist != null" >
+        waist,
+      </if>
+      <if test="hipline != null" >
+        hipline,
+      </if>
+      <if test="hiplineRatio != null" >
+        hipline_ratio,
+      </if>
+      <if test="bodyFat != null" >
+        body_fat,
+      </if>
+      <if test="metabolismRatio != null" >
+        metabolism_ratio,
+      </if>
+      <if test="stillHeartbeat != null" >
+        still_heartbeat,
+      </if>
+      <if test="bloodPressure != null" >
+        blood_pressure,
+      </if>
+      <if test="frontImageUrl != null" >
+        front_image_url,
+      </if>
+      <if test="sideImageUrl != null" >
+        side_image_url,
+      </if>
+      <if test="rearImageUrl != null" >
+        rear_image_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        #{age,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="height != null" >
+        #{height,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=VARCHAR},
+      </if>
+      <if test="habitusExp != null" >
+        #{habitusExp,jdbcType=VARCHAR},
+      </if>
+      <if test="waist != null" >
+        #{waist,jdbcType=VARCHAR},
+      </if>
+      <if test="hipline != null" >
+        #{hipline},
+      </if>
+      <if test="hiplineRatio != null" >
+        #{hiplineRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="bodyFat != null" >
+        #{bodyFat,jdbcType=VARCHAR},
+      </if>
+      <if test="metabolismRatio != null" >
+        #{metabolismRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="stillHeartbeat != null" >
+        #{stillHeartbeat,jdbcType=VARCHAR},
+      </if>
+      <if test="bloodPressure != null" >
+        #{bloodPressure,jdbcType=VARCHAR},
+      </if>
+       <if test="frontImageUrl != null" >
+        #{frontImageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sideImageUrl != null" >
+        #{sideImageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="rearImageUrl != null" >
+        #{rearImageUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByGrssUserEx" parameterType="com.grss.jlsx.core.bean.GrssUserEx" >
+    update grss_user_ex
+    <set >
+      <if test="age != null" >
+        age = #{age,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="height != null" >
+        height = #{height,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight,jdbcType=VARCHAR},
+      </if>
+      <if test="habitusExp != null" >
+        habitus_exp = #{habitusExp,jdbcType=VARCHAR},
+      </if>
+      <if test="waist != null" >
+        waist = #{waist,jdbcType=VARCHAR},
+      </if>
+       <if test="hipline != null" >
+        hipline = #{hipline},
+      </if>
+      <if test="hiplineRatio != null" >
+        hipline_ratio = #{hiplineRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="bodyFat != null" >
+        body_fat = #{bodyFat,jdbcType=VARCHAR},
+      </if>
+      <if test="metabolismRatio != null" >
+        metabolism_ratio = #{metabolismRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="stillHeartbeat != null" >
+        still_heartbeat = #{stillHeartbeat,jdbcType=VARCHAR},
+      </if>
+      <if test="bloodPressure != null" >
+        blood_pressure = #{bloodPressure,jdbcType=VARCHAR},
+      </if>
+      <if test="frontImageUrl != null" >
+        front_image_url = #{frontImageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sideImageUrl != null" >
+        side_image_url = #{sideImageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="rearImageUrl != null" >
+        rear_image_url = #{rearImageUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+</mapper>
