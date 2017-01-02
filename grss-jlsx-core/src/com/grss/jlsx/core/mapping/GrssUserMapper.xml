@@ -411,7 +411,7 @@ SELECT be_noticed_id,count(1) fs_count from grss_follow group by be_noticed_id) 
 			LEFT JOIN grss_club gc ON gcc.club_id = gc.club_id
 			LEFT JOIN grss_course gco ON gco.coach_id = model.user_id
 			LEFT JOIN (
-				select course_id,count(1) as order_count from grss_order where order_date>=CONCAT(YEAR(curdate()),'-',DAY(curdate()),'-01 00:00:00')  and `state`=2 GROUP BY course_id
+				select course_id,count(1) as order_count from grss_order where order_date>=CONCAT(YEAR(curdate()),'-',month(curdate()),'-01 00:00:00')  and `state`=2 GROUP BY course_id
 			) order_data ON gco.id=order_data.course_id
 			WHERE
 				model.user_type = "coach"  and model.`status`=1 

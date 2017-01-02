@@ -23,5 +23,7 @@ public interface GrssVideoOrderDao {
 	List<GrssVideoOrder> selectVideoOrderByOrderIdAndCatName(Map<String, Object> params);
 
 	Integer selectOrderCountByVideoId(@Param("videoId")String videoId);
+	
+	List<Map<String,Object>> getOrderVideoCat_v2(Map<String, Object> params);
 
 }

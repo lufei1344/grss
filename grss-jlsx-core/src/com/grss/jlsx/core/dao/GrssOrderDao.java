@@ -25,6 +25,7 @@ public interface GrssOrderDao {
     List<Map<String,Object>> selectOrderCounts(Map<String,Object> params);
     
     Integer selectCoachOrderCount(@Param("courseId")String courseId);
+    Integer selectCoachOrderCount_v2(@Param("courseId")String courseId);
     
     List<GrssOrder> findGrssOrder(Map<String, Object> pageParam);
 

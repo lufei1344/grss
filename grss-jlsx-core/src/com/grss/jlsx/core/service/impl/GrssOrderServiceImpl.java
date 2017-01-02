@@ -151,4 +151,9 @@ public class GrssOrderServiceImpl extends BaseService implements GrssOrderServic
 		return grssOrderDao.selectOrderCurrentDate(minute);
 	}
 
+	@Override
+	public Integer findCoachOrderCount_v2(String courseId) {
+		return grssOrderDao.selectCoachOrderCount_v2(courseId);
+	}
+
 }

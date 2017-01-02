@@ -26,6 +26,7 @@ public interface GrssOrderService {
 	void addOrderResult(String orderId, String vcIds);
 
 	Integer findCoachOrderCount(String courseId);
+	Integer findCoachOrderCount_v2(String courseId);
 	
 	Pager<GrssOrder> findGrssOrder(Map<String,Object> params);
 	

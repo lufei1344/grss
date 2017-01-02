@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -75,6 +76,124 @@ public class VideoController extends BaseController{
 	public ResultDataTO getVideoList(@RequestParam(value = "catId",required = false) String catId){
 		List<GrssVideo> videoList = grssVideoService.findGrssVideoByCatIdList(catId);
 		return resultSuccess(ParsePropertiesUtil.getMessage("message.success"), videoList);
+	}
+	/**
+	 * 根据用户订单号查找视频分类
+	 * @param orderId
+	 * @param version V2
+	 * @return
+	 */
+	@RequestMapping("/getOrderVideoCat_v2")
+	public @ResponseBody ResultDataTO getOrderVideoCat_v2(@RequestParam(value = "orderId",required = false) String orderId,@RequestParam(value = "version",required = false) String version){
+		List<Map<String,Object>> listResult = new ArrayList<Map<String,Object>>();
+		List<Map<String,Object>> list = grssVideoOrderService.getOrderVideoCat_v2(orderId);
+		List<String> level1 = new ArrayList<String>();
+		Map<String,List<Map<String,Object>>> level2 = new HashMap<String,List<Map<String,Object>>>();
+		Map<String,List<Map<String,Object>>> level3 = new HashMap<String,List<Map<String,Object>>>();
+		Map<String,List<Map<String,Object>>> vido = new HashMap<String,List<Map<String,Object>>>();
+		/*//diyi
+		for(Map<String,Object> m : list){
+			if(!level1.contains(m.get("catname1"))){
+				level1.add(m.get("catname1").toString());
+			}
+			//二级
+			if( level2.get(m.get("key1")) == null){
+				level2.put(m.get("key1").toString(), new ArrayList<Map<String,Object>>());
+				Map<String,Object> vv = new HashMap<String,Object>();
+				vv.put("name", m.get("catname2"));
+				vv.put("type", "sub");
+				level2.get(m.get("key1")).add(vv);
+			}else{
+				boolean ex = false;
+				for(Map<String,Object> mm : level2.get(m.get("key1"))){
+					if( m.get("catname2").equals(mm.get("name"))){
+						ex = true;
+					}
+				}
+				if(!ex){
+					Map<String,Object> vv = new HashMap<String,Object>();
+					vv.put("name", m.get("catname2"));
+					vv.put("type", "sub");
+					level2.get(m.get("key1")).add(vv);
+				}
+			}
+			
+			//三级
+			if( level3.get(m.get("key2")) == null){
+				level3.put(m.get("key2").toString(), new ArrayList<Map<String,Object>>());
+				Map<String,Object> vvv = new HashMap<String,Object>();
+				vvv.put("name", m.get("catname3"));
+				vvv.put("type", "sub");
+				level3.get(m.get("key2")).add(vvv);
+			}else{
+				boolean ex = false;
+				for(Map<String,Object> mm : level3.get(m.get("key2"))){
+					if( m.get("catname3").equals(mm.get("name"))){
+						ex = true;
+					}
+				}
+				if(!ex){
+					Map<String,Object> vvv = new HashMap<String,Object>();
+					vvv.put("name", m.get("catname3"));
+					vvv.put("type", "sub");
+					level3.get(m.get("key2")).add(vvv);
+				}
+			}
+			
+			
+			//视频
+			if( vido.get(m.get("key3")) == null){
+				vido.put(m.get("key3").toString(), new ArrayList<Map<String,Object>>());
+			}
+			Map<String,Object> v = new HashMap<String,Object>();
+			v.put("name", m.get("name"));
+			v.put("url", m.get("url"));
+			v.put("type", "sub");
+			vido.get(m.get("key3")).add(v);
+		}
+		
+		for(String s : level1){
+			Map<String,Object> m = new HashMap<String,Object>();
+			m.put("name", s);
+			m.put("type","parent");
+			m.put("subnode",level2.get(s));
+			for(Map<String,Object> vv : level2.get(s) ){
+				String key = s+vv.get("name");
+				vv.put("subnode", level3.get(key));
+				for(Map<String,Object> vvv : level3.get(key)){
+					String keyy = key+vvv.get("name");
+					vvv.put("subnode", vido.get(keyy));
+				}
+			}
+			listResult.add(m);
+		}*/
+		
+		
+		for(Map<String,Object> m : list){
+			if(!level1.contains(m.get("catname1"))){
+				level1.add(m.get("catname1").toString());
+			}
+		}
+			
+		for(String s : level1){
+			Map<String,Object> m = new HashMap<String,Object>();
+			m.put("name", s);
+			m.put("type","parent");
+			List<Map<String,Object>> sub = new ArrayList<Map<String,Object>>();
+			m.put("subnode",sub);
+			for(Map<String,Object> mm : list){
+				if(mm.get("catname1").equals(s)){
+					Map<String,Object> v = new HashMap<String,Object>();
+					v.put("name", mm.get("name"));
+					v.put("url", mm.get("url"));
+					m.put("type","sub");
+					sub.add(v);
+				}
+			}
+			listResult.add(m);
+		}
+		
+		return resultSuccess(ParsePropertiesUtil.getMessage("message.success"), listResult);
 	}
 	/**
 	 * 根据用户订单号查找视频分类

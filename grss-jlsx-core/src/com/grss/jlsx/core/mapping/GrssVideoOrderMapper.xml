@@ -15,6 +15,19 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="order_sort" property="orderSort" javaType="java.lang.Integer" />
   </resultMap>
+  <resultMap id="ListMap" type="HashMap" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="programa_name" property="programaName" jdbcType="VARCHAR" />
+    <result column="catname1" property="catname1" jdbcType="VARCHAR" />
+    <result column="catname2" property="catname2" jdbcType="VARCHAR" />
+    <result column="catname3" property="catname3" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="key1" property="key1" jdbcType="VARCHAR" />
+    <result column="key2" property="key2" jdbcType="VARCHAR" />
+    <result column="key3" property="key3" jdbcType="VARCHAR" />
+  </resultMap>
   <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select *
     from grss_video_order
@@ -206,5 +219,29 @@
   </select>
   <select id="selectOrderCountByVideoId" resultType="java.lang.Integer" parameterType="java.lang.String">
   	select count(1) from `grss_video_order` where vido_id=#{videoId};
+  </select>
+  <select id="getOrderVideoCat_v2" parameterType="java.util.Map" resultMap="ListMap">
+  	SELECT
+		a.id,
+		a.programa_name,
+		a.order_id,
+		b1. NAME catname1,
+		b2. NAME catname2,
+		b3. NAME catname3,
+	  c.url,c.name,b1.name key1,CONCAT(b1.name,b2.name) key2,CONCAT(b1.name,b2.name,b3.name) key3
+	FROM
+		grss_video_order a,
+		grss_video_category b1,
+		grss_video_category b2,
+		grss_video_category b3,
+		grss_video c
+	WHERE
+		a.vido_cat_name1 = b1.id
+	AND a.vido_cat_name2 = b2.id
+	AND a.vido_cat_name3 = b3.id
+	AND a.order_id = #{orderId}
+	AND a.vido_id = c.id
+	ORDER BY
+		a.order_sort,b2.name,b3.name 
   </select>
 </mapper>

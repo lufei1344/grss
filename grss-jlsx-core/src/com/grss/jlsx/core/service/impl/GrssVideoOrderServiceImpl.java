@@ -46,4 +46,11 @@ public class GrssVideoOrderServiceImpl implements GrssVideoOrderService {
 		return grssVideoOrderDao.selectOrderCountByVideoId(videoId);
 	}
 
+	@Override
+	public List<Map<String, Object>> getOrderVideoCat_v2(String orderId) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("orderId", orderId);
+		return grssVideoOrderDao.getOrderVideoCat_v2(params);
+	}
+
 }

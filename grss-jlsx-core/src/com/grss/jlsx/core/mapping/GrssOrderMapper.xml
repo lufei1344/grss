@@ -195,9 +195,13 @@
    <select id="selectCoachOrderCount" resultType="java.lang.Integer" parameterType="java.lang.String" >
   	select 
   	count(1) orderCount   
-  	from grss_order go where go.state = 2 and  course_id=#{courseId}
+  	from grss_order go where go.state = 2 and DATE_FORMAT(go.order_date, '%Y%m') = DATE_FORMAT(now(), '%Y%m') and  course_id=#{courseId}
   </select>
-  
+   <select id="selectCoachOrderCount_v2" resultType="java.lang.Integer" parameterType="java.lang.String" >
+  	select 
+  	count(1) orderCount   
+  	from grss_order go where go.state = 2 and DATE_FORMAT(go.order_date, '%Y%m') = DATE_FORMAT(now(), '%Y%m') and  course_id=#{courseId}
+  </select>
   <select id="findGrssOrder" parameterType="java.util.Map" resultMap="BaseResultMapExtends">
 	 select model.*,gu.user_id user_id_u,gu.nike_name from grss_order model,grss_user gu where model.user_id = gu.user_id
 	  	<if test="name != null">

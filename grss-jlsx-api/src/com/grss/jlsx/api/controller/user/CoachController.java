@@ -88,6 +88,9 @@ public class CoachController extends BaseController {
 				grssUser.setFansCount(fansCount);
 				grssUser.setFollowRelationship(followRelationship);
 				grssUser.setUserLevel(userLevel);
+				if(grssUser.getGrssCourse() != null){
+					grssUser.getGrssCourse().setOrderCount(orderCount);
+				}
 			}
 		}
     	return resultSuccess("成功", grssUser);

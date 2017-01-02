@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.grss.jlsx.api.controller.BaseController;
 import com.grss.jlsx.api.process.annotation.AuthorityAnnotation;
 import com.grss.jlsx.api.process.util.DateUtil;
+import com.grss.jlsx.api.process.util.JPushUtils;
 import com.grss.jlsx.api.process.wx.pay.PayRequest;
 import com.grss.jlsx.api.to.ResultDataTO;
 import com.grss.jlsx.core.bean.GrssAssets;
@@ -190,6 +191,7 @@ public class OrderController extends BaseController{
 			grssOrder.setState(2);
 			grssOrderService.updateByGrssOrder(grssOrder);
 			grssOrderService.addOrderResult_V2(orderId,vcIds);
+			JPushUtils.sendPush("您的订单处理成功！", grssOrder.getUserId());
 			return resultSuccess("订单处理成功！",null);
 		} catch (Exception e) {
 			e.printStackTrace();
