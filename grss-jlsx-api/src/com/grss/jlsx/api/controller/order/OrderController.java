@@ -265,6 +265,7 @@ public class OrderController extends BaseController{
 				params.put("total_fee",amount);
 				params.put("out_trade_no", orderId);
 				Map<String,String> resultData = payRequest.getPayParams(params);
+				JPushUtils.sendPushJL("您有一个新的订单", courseId);
 				if(resultData != null && resultData.size() > 0){
 					resultData.put("appid", WXConstant.APP_ID);
 					resultData.put("partnerid",WXConstant.MCH_ID);

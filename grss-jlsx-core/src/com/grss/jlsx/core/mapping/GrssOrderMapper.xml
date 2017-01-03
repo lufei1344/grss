@@ -258,6 +258,7 @@
 	AND gc.coach_id = gu.user_id
 	AND go.state = 2
 	AND go.user_id = #{userId}
+	order by go.order_date desc
   	</select>
   	<select id="selectOrderCurrentDate" parameterType="java.lang.Integer" resultMap="BaseResultMapExtends">
   		select * from grss_order go where  go.state = 1 and IFNULL(TIMESTAMPDIFF(MINUTE,go.pay_date,now()),0) &gt;= #{minute}
