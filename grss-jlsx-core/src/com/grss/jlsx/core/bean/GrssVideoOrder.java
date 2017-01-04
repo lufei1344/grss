@@ -29,6 +29,7 @@ public class GrssVideoOrder extends BaseBean{
     private String name;
     
     private Integer orderSort;
+    private Integer vidoSort;
 
     public String getId() {
         return id;
@@ -124,6 +125,14 @@ public class GrssVideoOrder extends BaseBean{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Integer getVidoSort() {
+		return vidoSort;
+	}
+
+	public void setVidoSort(Integer vidoSort) {
+		this.vidoSort = vidoSort;
 	}
     
     

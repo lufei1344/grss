@@ -97,6 +97,7 @@ public class GrssOrderServiceImpl extends BaseService implements GrssOrderServic
 		programOrderSortMap.put("柔韧伸展", 3);
 		programOrderSortMap.put("有氧训练", 4);
 		String [] vcIdArray=vcIds.split(";");
+		int len = 1;
 		for (String vcIdStr : vcIdArray) {
 			if(vcIdStr.contains(",")){
 				String []vcId=vcIdStr.split(",");
@@ -115,6 +116,7 @@ public class GrssOrderServiceImpl extends BaseService implements GrssOrderServic
 				grssVideoOrder.setVidoCatName2(catId2);
 				grssVideoOrder.setVidoCatName3(catId3);
 				grssVideoOrder.setOrderSort(orderSort);
+				grssVideoOrder.setVidoSort(len++);
 				grssVideoOrderDao.insertByGrssVideoOrder(grssVideoOrder);
 			}
 		}

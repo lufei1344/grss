@@ -14,6 +14,7 @@
     <result column="level" property="level" javaType="java.lang.Integer" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="order_sort" property="orderSort" javaType="java.lang.Integer" />
+    <result column="vido_sort" property="vidoSort" javaType="java.lang.Integer" />
   </resultMap>
   <resultMap id="ListMap" type="HashMap" >
     <result column="id" property="id" jdbcType="VARCHAR" />
@@ -70,6 +71,9 @@
       <if test="orderSort != null" >
         order_sort,
       </if>
+      <if test="vidoSort != null" >
+        vido_sort,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -101,6 +105,9 @@
       </if>
       <if test="orderSort != null" >
         #{orderSort},
+      </if>
+      <if test="vidoSort != null" >
+        #{vidoSort},
       </if>
     </trim>
   </insert>
@@ -242,6 +249,6 @@
 	AND a.order_id = #{orderId}
 	AND a.vido_id = c.id
 	ORDER BY
-		a.order_sort,b2.name,b3.name 
+		a.order_sort,a.vido_sort
   </select>
 </mapper>

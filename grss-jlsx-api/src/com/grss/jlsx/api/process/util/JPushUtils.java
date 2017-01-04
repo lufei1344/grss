@@ -28,10 +28,11 @@ public class JPushUtils {
 	 public static PushPayload buildPushObject_andriod( String content,String userid) {
 	        return PushPayload.newBuilder()
 	                .setPlatform(Platform.android())
-	                .setAudience(Audience.newBuilder()
+	                .setAudience(Audience.alias(userid))
+	               /* .setAudience(Audience.newBuilder()
 	                        .addAudienceTarget(AudienceTarget.tag("tag"))
 	                        .addAudienceTarget(AudienceTarget.alias(userid))
-	                        .build())
+	                        .build())*/
 	                .setNotification(Notification.alert(content)).build();
 	                /*.setMessage(Message.newBuilder()
 	                        .setMsgContent(content)
@@ -42,10 +43,11 @@ public class JPushUtils {
 	 public static PushPayload buildPushObject_ios( String content,String userid) {
 		 return PushPayload.newBuilder()
 				 .setPlatform(Platform.ios())
-				 .setAudience(Audience.newBuilder()
+				 .setAudience(Audience.alias(userid))
+				 /*.setAudience(Audience.newBuilder()
 						 .addAudienceTarget(AudienceTarget.tag("tag"))
 						 .addAudienceTarget(AudienceTarget.alias(userid))
-						 .build())
+						 .build())*/
 				 .setNotification(Notification.newBuilder()
 	                        .addPlatformNotification(IosNotification.newBuilder()
 	                                .setAlert("您有一条新的订单")
@@ -116,7 +118,7 @@ public class JPushUtils {
 
 	 public static void main(String[] args){
 		 for(int i=0; i<4; i++){
-			 JPushUtils.sendPush("测试"+i,"d225909eb69bf26a2256f519"); 
+			 JPushUtils.sendPush("测试"+i,"b0a6f737bdc6424ab6e7f913c07b6889"); 
 		 }
 		 
 	 }

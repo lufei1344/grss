@@ -96,7 +96,7 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <select id="selectGrssVideoByCatIdList" parameterType="java.lang.String" resultMap="BaseResultMap">
-  	select * from grss_video gv where gv.cat_id = #{catId}
+  	select * from grss_video gv where gv.cat_id = #{catId} order by id
   </select>
   <select id="selectVideoList" resultMap="BaseResultMapExtends" parameterType="java.util.Map">
   	select gv.*,gvc.name as cat_name  
